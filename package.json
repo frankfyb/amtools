@@ -25,7 +25,13 @@
     "migration:generate": "typeorm migration:generate",
     "migration:run": "typeorm migration:run",
     "migration:revert": "typeorm migration:revert",
-    "seed": "ts-node src/infrastructure/database/seeds/index.ts"
+    "seed": "ts-node src/infrastructure/database/seeds/index.ts",
+    "docker:build": "docker build -t amtools-backend .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env amtools-backend",
+    "docker:compose:up": "docker-compose up -d",
+    "docker:compose:down": "docker-compose down",
+    "docker:compose:logs": "docker-compose logs -f",
+    "deploy": "chmod +x scripts/deploy.sh && ./scripts/deploy.sh"
   },
   "keywords": [
     "amtools",
