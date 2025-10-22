@@ -104,6 +104,13 @@ export default function Home() {
             { id: '17', name: 'Trello', description: '看板式项目管理工具', url: 'https://trello.com' },
             { id: '18', name: 'Asana', description: '团队协作和项目跟踪工具', url: 'https://asana.com' },
           ]
+        },
+        {
+          id: 'security',
+          name: '安全工具',
+          tools: [
+            { id: '23', name: '密码生成器', description: '生成安全的随机密码，支持自定义长度和字符类型', url: '/tools/password-generator' },
+          ]
         }
       ]
     },
@@ -235,14 +242,25 @@ export default function Home() {
               </p>
               
               {/* 访问按钮 */}
-              <a
-                href={tool.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors"
-              >
-                访问工具
-              </a>
+              {tool.url.startsWith('/') ? (
+                // 内部路由使用 Link 组件
+                <a
+                  href={tool.url}
+                  className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors"
+                >
+                  使用工具
+                </a>
+              ) : (
+                // 外部链接使用 a 标签
+                <a
+                  href={tool.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors"
+                >
+                  访问工具
+                </a>
+              )}
             </div>
           ))}
         </div>
