@@ -218,238 +218,273 @@ export default function PasswordGenerator() {
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-cyan-400/20 to-blue-600/20 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative z-10 py-4 sm:py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* 页面标题 */}
-          <div className="text-center mb-8 sm:mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-indigo-500 via-blue-500 to-cyan-500 rounded-2xl mb-4 sm:mb-6 shadow-lg shadow-indigo-500/25">
-              <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
+      <div className="relative z-10 py-2 sm:py-4 lg:py-6 px-4">
+        <div className="max-w-6xl mx-auto">
+          {/* 页面标题 - 优化PC端间距 */}
+          <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+            {/* 图标容器 - 使用更现代的设计 */}
+            <div className="relative inline-flex items-center justify-center mb-4 sm:mb-6 lg:mb-8">
+              {/* 背景光晕效果 */}
+              <div className="absolute inset-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-emerald-400/20 via-blue-500/20 to-purple-600/20 rounded-3xl blur-xl animate-pulse"></div>
+              
+              {/* 主图标容器 */}
+              <div className="relative w-14 h-14 sm:w-18 sm:h-18 lg:w-22 lg:h-22 bg-gradient-to-br from-emerald-500 via-blue-500 to-purple-600 rounded-2xl shadow-2xl shadow-blue-500/25 flex items-center justify-center transform hover:scale-105 transition-all duration-300">
+                {/* 内层装饰 */}
+                <div className="absolute inset-1 bg-gradient-to-br from-white/10 to-transparent rounded-xl"></div>
+                
+                {/* 锁图标 - 使用更精美的设计 */}
+                <svg className="w-7 h-7 sm:w-9 sm:h-9 lg:w-11 lg:h-11 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  {/* 添加钥匙孔装饰 */}
+                  <circle cx="12" cy="16" r="1" fill="currentColor" />
+                </svg>
+                
+                {/* 闪光效果 */}
+                <div className="absolute top-2 left-2 w-2 h-2 bg-white/40 rounded-full blur-sm"></div>
+              </div>
             </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600 bg-clip-text text-transparent mb-3 sm:mb-4">
-              密码生成器
+
+            {/* 标题 - 使用更优雅的渐变和字体 */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-3 sm:mb-4 lg:mb-6 tracking-tight">
+              <span className="inline-block transform hover:scale-105 transition-transform duration-300">
+                密码生成器
+              </span>
             </h1>
-            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed px-4">
-              生成安全可靠的随机密码，保护您的数字账户安全
-            </p>
+            
+            {/* 副标题 - 一行显示，字体适中 */}
+            <div className="max-w-4xl mx-auto px-4">
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                🔐 生成安全可靠的随机密码，保护您的数字账户安全，支持多种字符组合和自定义规则
+              </p>
+            </div>
+            
+            {/* 装饰性元素 */}
+            <div className="flex items-center justify-center mt-4 sm:mt-6 lg:mt-8 space-x-2">
+              <div className="w-2 h-2 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+              <div className="w-2 h-2 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+            </div>
           </div>
           
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl shadow-slate-200/50 border border-white/50 p-4 sm:p-8 lg:p-10">
-            {/* 密码长度设置 */}
-            <div className="mb-6 sm:mb-8">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">
-                <label className="text-lg font-semibold text-slate-800">
-                  密码长度
-                </label>
-                <div className="bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl font-bold text-base sm:text-lg min-w-[60px] text-center">
-                  {config.length}
+          {/* PC端使用两列布局，移动端保持单列 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
+            {/* 左列：配置选项 */}
+            <div className="lg:sticky lg:top-4 lg:h-fit">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl shadow-xl shadow-slate-200/50 border border-white/50 p-3 sm:p-6 lg:p-6">
+                {/* 密码长度设置 */}
+                <div className="mb-4 sm:mb-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
+                    <label className="text-base lg:text-lg font-semibold text-slate-800">
+                      密码长度
+                    </label>
+                    <div className="bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl font-bold text-sm sm:text-base lg:text-lg min-w-[60px] text-center">
+                      {config.length}
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="range"
+                      min="4"
+                      max="50"
+                      value={config.length}
+                      onChange={(e) => updateConfig('length', parseInt(e.target.value))}
+                      className="w-full h-3 bg-gradient-to-r from-slate-200 to-slate-300 rounded-full appearance-none cursor-pointer slider focus:outline-none focus:ring-4 focus:ring-indigo-500/20"
+                      style={{
+                        background: `linear-gradient(to right, #6366f1 0%, #3b82f6 ${(config.length - 4) / 46 * 50}%, #06b6d4 ${(config.length - 4) / 46 * 100}%, #e2e8f0 ${(config.length - 4) / 46 * 100}%, #e2e8f0 100%)`
+                      }}
+                    />
+                    <div className="flex justify-between text-xs sm:text-sm text-slate-500 mt-2">
+                      <span className="font-medium">4位</span>
+                      <span className="font-medium">50位</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="relative">
-                <input
-                  type="range"
-                  min="4"
-                  max="50"
-                  value={config.length}
-                  onChange={(e) => updateConfig('length', parseInt(e.target.value))}
-                  className="w-full h-3 bg-gradient-to-r from-slate-200 to-slate-300 rounded-full appearance-none cursor-pointer slider focus:outline-none focus:ring-4 focus:ring-indigo-500/20"
-                  style={{
-                    background: `linear-gradient(to right, #6366f1 0%, #3b82f6 ${(config.length - 4) / 46 * 50}%, #06b6d4 ${(config.length - 4) / 46 * 100}%, #e2e8f0 ${(config.length - 4) / 46 * 100}%, #e2e8f0 100%)`
-                  }}
-                />
-                <div className="flex justify-between text-sm text-slate-500 mt-2">
-                  <span className="font-medium">4位</span>
-                  <span className="font-medium">50位</span>
+
+                {/* 字符类型选择 */}
+                <div className="mb-4 sm:mb-6">
+                  <label className="block text-base lg:text-lg font-semibold text-slate-800 mb-3 sm:mb-4">
+                    包含字符类型
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2 sm:gap-3">
+                    <label className={`group relative flex items-center p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                      config.includeUppercase 
+                        ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500 shadow-lg shadow-indigo-500/10' 
+                        : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                    }`}>
+                      <input
+                        type="checkbox"
+                        checked={config.includeUppercase}
+                        onChange={(e) => updateConfig('includeUppercase', e.target.checked)}
+                        className="sr-only"
+                      />
+                      <div className={`flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-lg border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                        config.includeUppercase 
+                          ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500' 
+                          : 'border-slate-300 bg-white group-hover:border-slate-400'
+                      }`}>
+                        {config.includeUppercase && (
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-800 mb-0.5 text-xs sm:text-sm">大写字母</div>
+                        <div className="text-xs text-slate-500 font-mono">A-Z</div>
+                      </div>
+                    </label>
+                    
+                    <label className={`group relative flex items-center p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                      config.includeLowercase 
+                        ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500 shadow-lg shadow-indigo-500/10' 
+                        : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                    }`}>
+                      <input
+                        type="checkbox"
+                        checked={config.includeLowercase}
+                        onChange={(e) => updateConfig('includeLowercase', e.target.checked)}
+                        className="sr-only"
+                      />
+                      <div className={`flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-lg border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                        config.includeLowercase 
+                          ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500' 
+                          : 'border-slate-300 bg-white group-hover:border-slate-400'
+                      }`}>
+                        {config.includeLowercase && (
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-800 mb-0.5 text-xs sm:text-sm">小写字母</div>
+                        <div className="text-xs text-slate-500 font-mono">a-z</div>
+                      </div>
+                    </label>
+                    
+                    <label className={`group relative flex items-center p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                      config.includeNumbers 
+                        ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500 shadow-lg shadow-indigo-500/10' 
+                        : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                    }`}>
+                      <input
+                        type="checkbox"
+                        checked={config.includeNumbers}
+                        onChange={(e) => updateConfig('includeNumbers', e.target.checked)}
+                        className="sr-only"
+                      />
+                      <div className={`flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-lg border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                        config.includeNumbers 
+                          ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500' 
+                          : 'border-slate-300 bg-white group-hover:border-slate-400'
+                      }`}>
+                        {config.includeNumbers && (
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-800 mb-0.5 text-xs sm:text-sm">数字</div>
+                        <div className="text-xs text-slate-500 font-mono">0-9</div>
+                      </div>
+                    </label>
+                    
+                    <label className={`group relative flex items-center p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                      config.includeSymbols 
+                        ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500 shadow-lg shadow-indigo-500/10' 
+                        : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                    }`}>
+                      <input
+                        type="checkbox"
+                        checked={config.includeSymbols}
+                        onChange={(e) => updateConfig('includeSymbols', e.target.checked)}
+                        className="sr-only"
+                      />
+                      <div className={`flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-lg border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                        config.includeSymbols 
+                          ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500' 
+                          : 'border-slate-300 bg-white group-hover:border-slate-400'
+                      }`}>
+                        {config.includeSymbols && (
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-800 mb-0.5 text-xs sm:text-sm">特殊符号</div>
+                        <div className="text-xs text-slate-500 font-mono">!@#$%^&*...</div>
+                      </div>
+                    </label>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            {/* 字符类型选择 */}
-            <div className="mb-6 sm:mb-8">
-              <label className="block text-lg font-semibold text-slate-800 mb-4 sm:mb-6">
-                包含字符类型
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <label className={`group relative flex items-center p-4 sm:p-5 border-2 rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 ${
-                  config.includeUppercase 
-                    ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500 shadow-lg shadow-indigo-500/10' 
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
-                }`}>
-                  <input
-                    type="checkbox"
-                    checked={config.includeUppercase}
-                    onChange={(e) => updateConfig('includeUppercase', e.target.checked)}
-                    className="sr-only"
-                  />
-                  <div className={`flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 mr-3 sm:mr-4 flex items-center justify-center transition-all duration-300 ${
-                    config.includeUppercase 
-                      ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500' 
-                      : 'border-slate-300 bg-white group-hover:border-slate-400'
-                  }`}>
-                    {config.includeUppercase && (
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
+                {/* 高级选项 */}
+                <div className="mb-0">
+                  <label className="block text-base lg:text-lg font-semibold text-slate-800 mb-3 sm:mb-4">
+                    高级选项
+                  </label>
+                  
+                  {/* 排除选项 */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2 sm:gap-3 mb-3 sm:mb-4">
+                    <label className={`group relative flex items-center p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                      config.excludeSimilar 
+                        ? 'border-amber-500 bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/10' 
+                        : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                    }`}>
+                      <input
+                        type="checkbox"
+                        checked={config.excludeSimilar}
+                        onChange={(e) => updateConfig('excludeSimilar', e.target.checked)}
+                        className="sr-only"
+                      />
+                      <div className={`flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-lg border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                        config.excludeSimilar 
+                          ? 'border-amber-500 bg-gradient-to-br from-amber-500 to-orange-500' 
+                          : 'border-slate-300 bg-white group-hover:border-slate-400'
+                      }`}>
+                        {config.excludeSimilar && (
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-800 mb-0.5 text-xs sm:text-sm">排除相似字符</div>
+                        <div className="text-xs text-slate-500 font-mono">I, l, 1, 0, O</div>
+                      </div>
+                    </label>
+                    
+                    <label className={`group relative flex items-center p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                      config.excludeAmbiguous 
+                        ? 'border-amber-500 bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/10' 
+                        : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                    }`}>
+                      <input
+                        type="checkbox"
+                        checked={config.excludeAmbiguous}
+                        onChange={(e) => updateConfig('excludeAmbiguous', e.target.checked)}
+                        className="sr-only"
+                      />
+                      <div className={`flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-lg border-2 mr-3 flex items-center justify-center transition-all duration-300 ${
+                        config.excludeAmbiguous 
+                          ? 'border-amber-500 bg-gradient-to-br from-amber-500 to-orange-500' 
+                          : 'border-slate-300 bg-white group-hover:border-slate-400'
+                      }`}>
+                        {config.excludeAmbiguous && (
+                          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-800 mb-0.5 text-xs sm:text-sm">排除模糊字符</div>
+                        <div className="text-xs text-slate-500 font-mono">{}, [], (), /, \, &apos;, &quot;, ~</div>
+                      </div>
+                    </label>
                   </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-slate-800 mb-1 text-sm sm:text-base">大写字母</div>
-                    <div className="text-xs sm:text-sm text-slate-500 font-mono">A-Z</div>
-                  </div>
-                </label>
-                
-                <label className={`group relative flex items-center p-4 sm:p-5 border-2 rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 ${
-                  config.includeLowercase 
-                    ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500 shadow-lg shadow-indigo-500/10' 
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
-                }`}>
-                  <input
-                    type="checkbox"
-                    checked={config.includeLowercase}
-                    onChange={(e) => updateConfig('includeLowercase', e.target.checked)}
-                    className="sr-only"
-                  />
-                  <div className={`flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 mr-3 sm:mr-4 flex items-center justify-center transition-all duration-300 ${
-                    config.includeLowercase 
-                      ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500' 
-                      : 'border-slate-300 bg-white group-hover:border-slate-400'
-                  }`}>
-                    {config.includeLowercase && (
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-slate-800 mb-1 text-sm sm:text-base">小写字母</div>
-                    <div className="text-xs sm:text-sm text-slate-500 font-mono">a-z</div>
-                  </div>
-                </label>
-                
-                <label className={`group relative flex items-center p-4 sm:p-5 border-2 rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 ${
-                  config.includeNumbers 
-                    ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500 shadow-lg shadow-indigo-500/10' 
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
-                }`}>
-                  <input
-                    type="checkbox"
-                    checked={config.includeNumbers}
-                    onChange={(e) => updateConfig('includeNumbers', e.target.checked)}
-                    className="sr-only"
-                  />
-                  <div className={`flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 mr-3 sm:mr-4 flex items-center justify-center transition-all duration-300 ${
-                    config.includeNumbers 
-                      ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500' 
-                      : 'border-slate-300 bg-white group-hover:border-slate-400'
-                  }`}>
-                    {config.includeNumbers && (
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-slate-800 mb-1 text-sm sm:text-base">数字</div>
-                    <div className="text-xs sm:text-sm text-slate-500 font-mono">0-9</div>
-                  </div>
-                </label>
-                
-                <label className={`group relative flex items-center p-4 sm:p-5 border-2 rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 ${
-                  config.includeSymbols 
-                    ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500 shadow-lg shadow-indigo-500/10' 
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
-                }`}>
-                  <input
-                    type="checkbox"
-                    checked={config.includeSymbols}
-                    onChange={(e) => updateConfig('includeSymbols', e.target.checked)}
-                    className="sr-only"
-                  />
-                  <div className={`flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 mr-3 sm:mr-4 flex items-center justify-center transition-all duration-300 ${
-                    config.includeSymbols 
-                      ? 'border-indigo-500 bg-gradient-to-br from-indigo-500 to-blue-500' 
-                      : 'border-slate-300 bg-white group-hover:border-slate-400'
-                  }`}>
-                    {config.includeSymbols && (
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-slate-800 mb-1 text-sm sm:text-base">特殊符号</div>
-                    <div className="text-xs sm:text-sm text-slate-500 font-mono">!@#$%^&*...</div>
-                  </div>
-                </label>
-              </div>
-            </div>
 
-            {/* 高级选项 */}
-            <div className="mb-6 sm:mb-8">
-              <label className="block text-lg font-semibold text-slate-800 mb-4 sm:mb-6">
-                高级选项
-              </label>
-              
-              {/* 排除选项 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
-                <label className={`group relative flex items-center p-4 sm:p-5 border-2 rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 ${
-                  config.excludeSimilar 
-                    ? 'border-amber-500 bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/10' 
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
-                }`}>
-                  <input
-                    type="checkbox"
-                    checked={config.excludeSimilar}
-                    onChange={(e) => updateConfig('excludeSimilar', e.target.checked)}
-                    className="sr-only"
-                  />
-                  <div className={`flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 mr-3 sm:mr-4 flex items-center justify-center transition-all duration-300 ${
-                    config.excludeSimilar 
-                      ? 'border-amber-500 bg-gradient-to-br from-amber-500 to-orange-500' 
-                      : 'border-slate-300 bg-white group-hover:border-slate-400'
-                  }`}>
-                    {config.excludeSimilar && (
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-slate-800 mb-1 text-sm sm:text-base">排除相似字符</div>
-                    <div className="text-xs sm:text-sm text-slate-500 font-mono">I, l, 1, 0, O</div>
-                  </div>
-                </label>
-                
-                <label className={`group relative flex items-center p-4 sm:p-5 border-2 rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 ${
-                  config.excludeAmbiguous 
-                    ? 'border-amber-500 bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/10' 
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
-                }`}>
-                  <input
-                    type="checkbox"
-                    checked={config.excludeAmbiguous}
-                    onChange={(e) => updateConfig('excludeAmbiguous', e.target.checked)}
-                    className="sr-only"
-                  />
-                  <div className={`flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 rounded-lg border-2 mr-3 sm:mr-4 flex items-center justify-center transition-all duration-300 ${
-                    config.excludeAmbiguous 
-                      ? 'border-amber-500 bg-gradient-to-br from-amber-500 to-orange-500' 
-                      : 'border-slate-300 bg-white group-hover:border-slate-400'
-                  }`}>
-                    {config.excludeAmbiguous && (
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-slate-800 mb-1 text-sm sm:text-base">排除模糊字符</div>
-                    <div className="text-xs sm:text-sm text-slate-500 font-mono">{}, [], (), /, \, &apos;, &quot;</div>
-                  </div>
-                </label>
-              </div>
-              
               {/* 自定义符号 */}
               {config.includeSymbols && (
                 <div className="mb-4 sm:mb-6">
@@ -470,7 +505,7 @@ export default function PasswordGenerator() {
               )}
               
               {/* 最少字符数量 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 gap-4 sm:gap-6">
                 {config.includeNumbers && (
                   <div>
                     <label className="block text-base font-semibold text-slate-800 mb-2 sm:mb-3">
@@ -512,10 +547,13 @@ export default function PasswordGenerator() {
                     </div>
                   </div>
                 )}
-              </div>
             </div>
-
-            {/* 生成按钮 */}
+          </div>
+        </div>
+      </div>
+                {/* 右列：密码生成和显示 */}
+          <div className="mt-6 md:mt-0">
+              {/* 生成按钮 */}
             <div className="mb-6 sm:mb-8">
               <button
                 onClick={generatePassword}
@@ -651,11 +689,9 @@ export default function PasswordGenerator() {
               </ul>
             </div>
           </div>
-        </div>
-      </div>
     </div>
-  )
-}
+  </div>
+  </div>
 
       <style jsx>{`
         .animate-fade-in {
@@ -754,3 +790,6 @@ export default function PasswordGenerator() {
           box-shadow: 0 4px 12px rgba(16, 185, 129, 0.6);
         }
       `}</style>
+    </div>
+  )
+}
