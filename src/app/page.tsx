@@ -24,11 +24,7 @@ interface Tool {
 }
 
 // 分类接口定义
-interface Category {
-  id: string;
-  name: string;
-  count: number;
-}
+
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('全部');
@@ -250,7 +246,7 @@ export default function Home() {
 
             {/* 分类按钮 */}
             <div className="space-y-2">
-              {categoriesWithCount.map((category, index) => (
+              {categoriesWithCount.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.name)}
