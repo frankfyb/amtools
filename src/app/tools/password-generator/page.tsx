@@ -220,36 +220,37 @@ export default function PasswordGenerator() {
 
       <div className="relative z-10 py-2 sm:py-4 lg:py-6 px-4">
         <div className="max-w-6xl mx-auto">
-          {/* 页面标题 - 优化PC端间距 */}
+          {/* 页面标题 - 图标和标题一行显示 */}
           <div className="text-left mb-6 sm:mb-8 lg:mb-10">
-            {/* 图标容器 - 使用更现代的设计 */}
-            <div className="relative inline-flex items-center justify-center mb-4 sm:mb-6 lg:mb-8">
-              {/* 背景光晕效果 */}
-              <div className="absolute inset-0 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-gradient-to-br from-emerald-400/20 via-blue-500/20 to-purple-600/20 rounded-3xl blur-xl animate-pulse"></div>
-              
-              {/* 主图标容器 */}
-              <div className="relative w-14 h-14 sm:w-18 sm:h-18 lg:w-22 lg:h-22 bg-gradient-to-br from-emerald-500 via-blue-500 to-purple-600 rounded-2xl shadow-2xl shadow-blue-500/25 flex items-center justify-center transform hover:scale-105 transition-all duration-300">
-                {/* 内层装饰 */}
-                <div className="absolute inset-1 bg-gradient-to-br from-white/10 to-transparent rounded-xl"></div>
+            {/* 图标和标题容器 - 水平排列 */}
+            <div className="flex items-center gap-4 sm:gap-6 lg:gap-8 mb-4 sm:mb-6 lg:mb-8">
+              {/* 图标容器 - 使用更现代的设计 */}
+              <div className="relative inline-flex items-center justify-center flex-shrink-0">
+                {/* 背景光晕效果 */}
+                <div className="absolute inset-0 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-gradient-to-br from-emerald-400/20 via-blue-500/20 to-purple-600/20 rounded-2xl blur-lg animate-pulse"></div>
                 
-                {/* 锁图标 - 使用更精美的设计 */}
-                <svg className="w-7 h-7 sm:w-9 sm:h-9 lg:w-11 lg:h-11 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                  {/* 添加钥匙孔装饰 */}
-                  <circle cx="12" cy="16" r="1" fill="currentColor" />
-                </svg>
-                
-                {/* 闪光效果 */}
-                <div className="absolute top-2 left-2 w-2 h-2 bg-white/40 rounded-full blur-sm"></div>
+                {/* 主图标容器 */}
+                <div className="relative w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-emerald-500 via-blue-500 to-purple-600 rounded-xl shadow-xl shadow-blue-500/25 flex items-center justify-center transform hover:scale-105 transition-all duration-300">
+                  {/* 内层装饰 */}
+                  <div className="absolute inset-1 bg-gradient-to-br from-white/10 to-transparent rounded-lg"></div>
+                  
+                  {/* 锁图标 - 使用更精美的设计 */}
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    {/* 添加钥匙孔装饰 */}
+                    <circle cx="12" cy="16" r="1" fill="currentColor" />
+                  </svg>
+                  
+                  {/* 闪光效果 */}
+                  <div className="absolute top-1.5 left-1.5 w-1.5 h-1.5 bg-white/40 rounded-full blur-sm"></div>
+                </div>
               </div>
-            </div>
 
-            {/* 标题 - 使用更优雅的渐变和字体 */}
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-3 sm:mb-4 lg:mb-6 tracking-tight">
-              <span className="inline-block transform hover:scale-105 transition-transform duration-300">
-                密码生成器
-              </span>
-            </h3>
+              {/* 标题 - 与图标在同一行 */}
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent tracking-tight flex-1">
+                 密码生成器
+               </h3>
+            </div>
             
             {/* 副标题 - 一行显示，字体适中 */}
             <div className="max-w-4xl mx-auto px-4">
