@@ -221,7 +221,7 @@ export default function PasswordGenerator() {
       <div className="relative z-10 py-2 sm:py-4 lg:py-6 px-4">
         <div className="max-w-6xl mx-auto">
           {/* 页面标题 - 优化PC端间距 */}
-          <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+          <div className="text-left mb-6 sm:mb-8 lg:mb-10">
             {/* 图标容器 - 使用更现代的设计 */}
             <div className="relative inline-flex items-center justify-center mb-4 sm:mb-6 lg:mb-8">
               {/* 背景光晕效果 */}
@@ -245,11 +245,11 @@ export default function PasswordGenerator() {
             </div>
 
             {/* 标题 - 使用更优雅的渐变和字体 */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-3 sm:mb-4 lg:mb-6 tracking-tight">
+            <h3 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-3 sm:mb-4 lg:mb-6 tracking-tight">
               <span className="inline-block transform hover:scale-105 transition-transform duration-300">
                 密码生成器
               </span>
-            </h1>
+            </h3>
             
             {/* 副标题 - 一行显示，字体适中 */}
             <div className="max-w-4xl mx-auto px-4">
