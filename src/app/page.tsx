@@ -153,6 +153,19 @@ export default function Home() {
       visits: '125K',
       hot: false,
       new: true
+    },
+    {
+      id: '10',
+      name: '英文文字转语音',
+      description: '将英文文本转换为自然语音，支持多种语音类型和语速调节，可下载音频文件。完全免费，保护隐私。',
+      url: '/tools/english-text-voice',
+      icon: '🔊',
+      category: 'AI音频',
+      visits: '0',
+      hot: false,
+      new: true,
+      tags: ['TTS', '语音合成', '音频下载', '英文朗读'],
+      highlights: ['多种语音选择', '参数自定义', '音频下载', '实时预览']
     }
   ];
 
