@@ -56,5 +56,17 @@ export const toolsData: Tool[] = [
       hot: false,
       new: true,
       tags: ['TTS', '语音合成', '音频下载', '英文朗读']
+    },
+   {
+      id: '4',
+      name: '练习todolist',
+      description: '已现一个极简的 TodoList 功能，适合新手逐步构建全栈应用，后续扩展其他模块。',
+      url: '/tools/todo-list',
+      icon: '🔊',
+      category: '实用小工具',
+      visits: '1',
+      hot: false,
+      new: true,
+      tags: ['TTS', '语音合成', '音频下载', '英文朗读']
     }
 ];
