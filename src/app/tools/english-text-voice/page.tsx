@@ -594,10 +594,10 @@ export default function EnglishTextVoice() {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Link 
-              href="/tools" 
+              href="/" 
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
-              ← 返回工具列表
+              ← 返回首页
             </Link>
             <div className="h-6 w-px bg-gray-300" />
             <h1 className="text-xl font-semibold text-gray-900">英文文本转语音</h1>
