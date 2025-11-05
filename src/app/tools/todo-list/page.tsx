@@ -1,87 +1,87 @@
-'use client';
+'use client'; // 标记为客户端组件（Next.js 13+ 必需）
 
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 
+// 1. 定义任务类型（TypeScript 基础）
 type Todo = {
   id: string;
   title: string;
   done: boolean;
-  createdAt: number;
 };
 
+// 2. 主页面组件（Next.js 页面路由对应组件）
 export default function TodoListPage() {
+  // 3. 状态管理（React 核心）
+  // 任务列表状态
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [input, setInput] = useState('');
+  // 输入框状态
+  const [inputValue, setInputValue] = useState('');
 
-  const canAdd = useMemo(() => input.trim().length > 0, [input]);
+  // 4. 添加任务函数
+  const addTodo = () => {
+    // 简单验证：输入不为空
+    if (!inputValue.trim()) return;
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      if (!canAdd) return;
-      const newTodo: Todo = {
-        id: crypto.randomUUID(),
-        title: input.trim(),
-        done: false,
-        createdAt: Date.now(),
-      };
-      setTodos((prev) => [newTodo, ...prev]);
-      setInput('');
-    },
-    [input, canAdd]
-  );
+    // 创建新任务
+    const newTodo: Todo = {
+      id: Date.now().toString(), // 用时间戳作为简单ID
+      title: inputValue.trim(),
+      done: false,
+    };
+
+    // 更新任务列表（不可变数据更新）
+    setTodos([newTodo, ...todos]);
+    // 清空输入框
+    setInputValue('');
+  };
+
+  // 5. 处理表单提交（支持 Enter 键提交）
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // 阻止表单默认刷新行为
+    addTodo();
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <section className="bg-white/90 backdrop-blur-sm rounded-2xl border border-slate-200/60 shadow-sm p-6">
-          <header className="mb-6">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-800 via-indigo-700 to-blue-600 bg-clip-text text-transparent">
-              极简 TodoList
-            </h1>
-            <p className="text-slate-600 mt-2">添加任务并在列表中显示，适合新手逐步扩展。</p>
-          </header>
+    <div className="max-w-md mx-auto p-4">
+      {/* 页面标题（Next.js 页面结构） */}
+      <h1 className="text-2xl font-bold mb-4">Next.js TodoList</h1>
 
-          <form onSubmit={handleSubmit} className="flex gap-3 mb-6">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="输入任务内容，例如：学习 React 基础"
-              aria-label="任务内容"
-              className="flex-1 px-4 py-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
-            />
-            <button
-              type="submit"
-              disabled={!canAdd}
-              className="px-5 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-indigo-500/25 transition-all"
-            >
-              添加
-            </button>
-          </form>
+      {/* 6. 表单组件（受控组件示例） */}
+      <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
+        <input
+          type="text"
+          value={inputValue}
+          // 实时更新输入框状态
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="添加任务..."
+          className="flex-1 p-2 border rounded"
+        />
+        <button
+          type="button" // 简化为普通按钮（也可保留submit）
+          onClick={addTodo}
+          className="p-2 bg-blue-500 text-white rounded"
+        >
+          添加
+        </button>
+      </form>
 
-          <ul className="space-y-3">
-            {todos.length === 0 ? (
-              <li className="text-slate-500 text-sm">暂无任务，添加你的第一条吧。</li>
-            ) : (
-              todos.map((todo) => (
-                <li
-                  key={todo.id}
-                  className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50"
-                >
-                  <span className="text-slate-800">{todo.title}</span>
-                </li>
-              ))
-            )}
-          </ul>
-        </section>
+      {/* 7. 任务列表渲染（列表渲染基础） */}
+      <ul className="space-y-2">
+        {todos.length === 0 ? (
+          <li className="text-gray-500">暂无任务</li>
+        ) : (
+          todos.map((todo) => (
+            <li key={todo.id} className="p-2 border rounded">
+              {todo.title}
+            </li>
+          ))
+        )}
+      </ul>
 
-        <footer className="mt-6 text-xs text-slate-500">
-          <p>
-            下一步可扩展：完成状态、删除任务、持久化、本地存储或接入 API。
-          </p>
-        </footer>
-      </main>
+      {/* 学习提示 */}
+      <p className="mt-6 text-sm text-gray-500">
+        核心知识点：客户端组件、useState状态管理、列表渲染、表单处理
+      </p>
     </div>
   );
 }
