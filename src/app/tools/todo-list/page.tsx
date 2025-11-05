@@ -1,87 +1,87 @@
-'use client';
+'use client'; // Next.js 客户端组件标记
 
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react'; // 导入状态管理钩子
 
+// 定义一个任务的类型（方便TypeScript检查）
 type Todo = {
-  id: string;
-  title: string;
-  done: boolean;
-  createdAt: number;
+  id: string; // 任务唯一标识
+  title: string; // 任务内容
 };
 
-export default function TodoListPage() {
+export default function TodoList() {
+  // 1. 用useState创建存储Todo列表的状态
+  // todos：当前的任务列表（初始为空数组）
+  // setTodos：更新任务列表的函数
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [input, setInput] = useState('');
 
-  const canAdd = useMemo(() => input.trim().length > 0, [input]);
+  // 2. 用useState创建存储输入框内容的状态
+  const [inputText, setInputText] = useState('');
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      if (!canAdd) return;
-      const newTodo: Todo = {
-        id: crypto.randomUUID(),
-        title: input.trim(),
-        done: false,
-        createdAt: Date.now(),
-      };
-      setTodos((prev) => [newTodo, ...prev]);
-      setInput('');
-    },
-    [input, canAdd]
-  );
+  // 3. 新增任务的函数
+  const addNewTodo = () => {
+    // 简单验证：输入框不能为空
+    if (inputText.trim() === '') {
+      alert('请输入任务内容！');
+      return;
+    }
+
+    // 创建新任务对象
+    const newTodo: Todo = {
+      id: Date.now().toString(), // 用当前时间戳当唯一ID（简单又好用）
+      title: inputText.trim(), // 去除输入的前后空格
+    };
+
+    // 4. 核心：更新任务列表
+    // 用新数组替换旧数组（React要求状态不可变）
+    // [newTodo, ...todos]：新任务放前面，后面跟着原来的所有任务
+    setTodos([newTodo, ...todos]);
+
+    // 清空输入框
+    setInputText('');
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <section className="bg-white/90 backdrop-blur-sm rounded-2xl border border-slate-200/60 shadow-sm p-6">
-          <header className="mb-6">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-slate-800 via-indigo-700 to-blue-600 bg-clip-text text-transparent">
-              极简 TodoList
-            </h1>
-            <p className="text-slate-600 mt-2">添加任务并在列表中显示，适合新手逐步扩展。</p>
-          </header>
+    <div style={{ maxWidth: '500px', margin: '0 auto', padding: '20px' }}>
+      <h1>学习 useState 存储 Todo 列表</h1>
 
-          <form onSubmit={handleSubmit} className="flex gap-3 mb-6">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="输入任务内容，例如：学习 React 基础"
-              aria-label="任务内容"
-              className="flex-1 px-4 py-3 rounded-xl border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm"
-            />
-            <button
-              type="submit"
-              disabled={!canAdd}
-              className="px-5 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-indigo-500/25 transition-all"
-            >
-              添加
-            </button>
-          </form>
+      {/* 输入框和添加按钮 */}
+      <div style={{ margin: '20px 0' }}>
+        {/* 输入框：值由inputText状态控制 */}
+        <input
+          type="text"
+          value={inputText}
+          // 输入时实时更新inputText状态
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="请输入任务..."
+          style={{
+            width: '300px',
+            padding: '8px',
+            marginRight: '10px',
+          }}
+        />
+        {/* 点击按钮触发新增任务 */}
+        <button onClick={addNewTodo} style={{ padding: '8px 16px' }}>
+          添加任务
+        </button>
+      </div>
 
-          <ul className="space-y-3">
-            {todos.length === 0 ? (
-              <li className="text-slate-500 text-sm">暂无任务，添加你的第一条吧。</li>
-            ) : (
-              todos.map((todo) => (
-                <li
-                  key={todo.id}
-                  className="flex items-center justify-between p-4 rounded-xl border border-slate-200 bg-slate-50"
-                >
-                  <span className="text-slate-800">{todo.title}</span>
-                </li>
-              ))
-            )}
+      {/* 显示任务列表 */}
+      <div>
+        <h3>任务列表（共 {todos.length} 项）</h3>
+        {/* 如果列表为空，显示提示 */}
+        {todos.length === 0 ? (
+          <p>暂无任务，赶紧添加一个吧~</p>
+        ) : (
+          // 遍历todos数组，显示每个任务
+          <ul>
+            {todos.map((todo) => (
+              <li key={todo.id} style={{ margin: '8px 0' }}>
+                {todo.title}
+              </li>
+            ))}
           </ul>
-        </section>
-
-        <footer className="mt-6 text-xs text-slate-500">
-          <p>
-            下一步可扩展：完成状态、删除任务、持久化、本地存储或接入 API。
-          </p>
-        </footer>
-      </main>
+        )}
+      </div>
     </div>
   );
 }
