@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 连接 PostgreSQL（URL 从 .env 文件读取）
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Todo 数据模型（对应数据库表）
+model Todo {
+  id        String   @id @default(cuid())  // 自动生成唯一 ID
+  title     String                        // 任务内容
+  done      Boolean  @default(false)       // 完成状态（默认未完成）
+  createdAt DateTime @default(now())       // 创建时间
+}

@@ -21,6 +21,71 @@ import { Todo as StorageTodo, clearTodos, getTodos, saveTodos } from './utils/lo
 
 type Todo = StorageTodo;
 
+// 服务端 Todo 类型与转换（服务器使用 done，前端使用 completed）
+type ServerTodo = { id: string; title: string; done: boolean; createdAt?: string };
+const toClient = (t: ServerTodo): Todo => ({ id: t.id, title: t.title, completed: t.done });
+
+// 统一封装 API 调用
+async function fetchServerTodos(): Promise<Todo[]> {
+  const res = await fetch('/tools/todo-list/api');
+  if (!res.ok) throw new Error('获取服务器数据失败');
+  const data: ServerTodo[] = await res.json();
+  return data.map(toClient);
+}
+
+async function createServerTodo(title: string): Promise<Todo> {
+  const res = await fetch('/tools/todo-list/api', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'create', data: { title } }),
+  });
+  if (!res.ok) throw new Error('创建任务失败');
+  const data: ServerTodo = await res.json();
+  return toClient(data);
+}
+
+async function updateServerTodoDone(id: string, done: boolean): Promise<Todo> {
+  const res = await fetch('/tools/todo-list/api', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'update', data: { id, done } }),
+  });
+  if (!res.ok) throw new Error('更新完成状态失败');
+  const data: ServerTodo = await res.json();
+  return toClient(data);
+}
+
+async function updateServerTodoTitle(id: string, title: string): Promise<Todo> {
+  const res = await fetch('/tools/todo-list/api', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'update', data: { id, title } }),
+  });
+  if (!res.ok) throw new Error('更新标题失败');
+  const data: ServerTodo = await res.json();
+  return toClient(data);
+}
+
+async function deleteServerTodo(id: string): Promise<void> {
+  const res = await fetch('/tools/todo-list/api', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'delete', data: { id } }),
+  });
+  if (!res.ok) throw new Error('删除任务失败');
+}
+
+// 新增：批量清空服务器端 Todos
+async function clearServerTodos(): Promise<{ success: true; deleted: number }> {
+  const res = await fetch('/tools/todo-list/api', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'clear', data: {} }),
+  });
+  if (!res.ok) throw new Error('清空任务失败');
+  return res.json();
+}
+
 export default function TodoPage() {
   // 页面状态：所有任务数据由此管理，子组件通过回调请求更新
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -38,6 +103,15 @@ export default function TodoPage() {
       setTodos(sample);
       saveTodos(sample);
     }
+    // 从服务器同步覆盖最新数据
+    fetchServerTodos()
+      .then((server) => {
+        setTodos(server);
+        saveTodos(server);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   // 持久化：每当 todos 变化时写入 localStorage
@@ -46,31 +120,67 @@ export default function TodoPage() {
   }, [todos]);
 
   // 添加：生成唯一 id，将新任务插入列表头部
-  const handleAdd = (title: string) => {
-    const newTodo: Todo = { id: Date.now().toString(), title, completed: false };
-    const next = [newTodo, ...todos];
+  // 添加：调用服务器创建后更新本地（服务器为真值）
+  const handleAdd = async (title: string) => {
+    try {
+      const created = await createServerTodo(title);
+      const next = [created, ...todos];
+      setTodos(next);
+    } catch (e) {
+      alert('创建任务失败，请稍后重试');
+    }
+  };
+
+  // 清空：删除服务器全部任务后清空本地
+  const handleClear = async () => {
+    try {
+      await clearServerTodos();
+      clearTodos();
+      setTodos([]);
+    } catch (e) {
+      alert('清空失败，请稍后重试');
+    }
+  };
+
+  // 完成切换：乐观更新，失败回滚
+  const handleToggle = async (id: string) => {
+    const prev = todos;
+    const next = prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t));
     setTodos(next);
+    try {
+      const updatedServer = await updateServerTodoDone(id, next.find((t) => t.id === id)!.completed);
+      setTodos((curr) => curr.map((t) => (t.id === id ? updatedServer : t)));
+    } catch (e) {
+      alert('更新状态失败，已回滚');
+      setTodos(prev);
+    }
   };
 
-  // 清空：移除本地存储键并清空状态
-  const handleClear = () => {
-    clearTodos();
-    setTodos([]);
+  // 删除：乐观更新，失败回滚
+  const handleDelete = async (id: string) => {
+    const prev = todos;
+    const next = prev.filter((t) => t.id !== id);
+    setTodos(next);
+    try {
+      await deleteServerTodo(id);
+    } catch (e) {
+      alert('删除失败，已回滚');
+      setTodos(prev);
+    }
   };
 
-  // 完成切换：根据 id 翻转 completed 状态
-  const handleToggle = (id: string) => {
-    setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
-  };
-
-  // 删除：过滤移除指定 id 的任务
-  const handleDelete = (id: string) => {
-    setTodos((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  // 编辑：更新指定 id 的标题文本
-  const handleEdit = (id: string, title: string) => {
-    setTodos((prev) => prev.map((t) => (t.id === id ? { ...t, title } : t)));
+  // 编辑：乐观更新，失败回滚
+  const handleEdit = async (id: string, title: string) => {
+    const prev = todos;
+    const next = prev.map((t) => (t.id === id ? { ...t, title } : t));
+    setTodos(next);
+    try {
+      const updatedServer = await updateServerTodoTitle(id, title);
+      setTodos((curr) => curr.map((t) => (t.id === id ? updatedServer : t)));
+    } catch (e) {
+      alert('编辑失败，已回滚');
+      setTodos(prev);
+    }
   };
 
   return (
