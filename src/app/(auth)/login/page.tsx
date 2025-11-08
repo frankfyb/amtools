@@ -1,16 +1,55 @@
-"use client";
+'use client';
 
+import { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+
+function mapOAuthError(code: string | null): string | null {
+  if (!code) return null;
+  switch (code) {
+    case 'OAuthSignin':
+    case 'OAuthCallback':
+    case 'OAuthCreateAccount':
+    case 'Callback':
+      return '第三方登录出错，请重试或更换方式';
+    case 'CredentialsSignin':
+      return '账号或密码错误';
+    case 'SessionRequired':
+      return '请先登录以访问该页面';
+    default:
+      return '登录失败，请稍后重试';
+  }
+}
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const from = searchParams.get('callbackUrl') || searchParams.get('from') || '/';
+
+  useEffect(() => {
+    // 来自中间件或OAuth失败的错误提示
+    const oauthError = mapOAuthError(searchParams.get('error'));
+    if (oauthError) {
+      setError(oauthError);
+    } else {
+      setError(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  useEffect(() => {
+    setError(null);
+  }, [identifier, password]);
 
   async function handleCredentialsLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     const res = await signIn('credentials', {
       redirect: false,
       identifier,
@@ -18,9 +57,9 @@ export default function LoginPage() {
     });
     setLoading(false);
     if (res?.ok) {
-      window.location.href = '/';
+      router.replace(`${from}?login=ok`);
     } else {
-      alert(res?.error || '登录失败，请检查账号密码');
+      setError(res?.error || '登录失败，请检查账号密码');
     }
   }
 
@@ -51,6 +90,11 @@ export default function LoginPage() {
               required
             />
           </div>
+          {error && (
+            <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-2">
+              {error}
+            </div>
+          )}
           <button
             type="submit"
             disabled={loading}
@@ -63,13 +107,13 @@ export default function LoginPage() {
         <div className="mt-6 grid grid-cols-2 gap-3">
           <button
             className="px-4 py-2 rounded-lg border border-neutral-300 bg-neutral-100 hover:bg-neutral-200"
-            onClick={() => signIn('github')}
+            onClick={() => signIn('github', { callbackUrl: `${from}?login=ok` })}
           >
             GitHub 登录
           </button>
           <button
             className="px-4 py-2 rounded-lg border border-neutral-300 bg-neutral-100 hover:bg-neutral-200"
-            onClick={() => signIn('google')}
+            onClick={() => signIn('google', { callbackUrl: `${from}?login=ok` })}
           >
             Google 登录
           </button>

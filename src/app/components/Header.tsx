@@ -1,6 +1,7 @@
 'use client';
 
 import { memo, useState, type ReactNode } from 'react';
+import AuthStatus from './AuthStatus';
 
 export interface HeaderNavItem {
   label: string;
@@ -84,6 +85,9 @@ const Header = memo(function Header({
                 <span className="text-sm lg:text-base">提交工具</span>
               </button>
             )}
+
+            {/* 认证状态组件 */}
+            <AuthStatus />
 
             {/* 移动端菜单按钮 */}
             {navItems.length > 0 && (
