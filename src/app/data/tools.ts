@@ -55,7 +55,7 @@ export const toolsData: Tool[] = [
       visits: '0',
       hot: false,
       new: true,
-      tags: ['TTS', '语音合成', '音频下载', '英文朗读']
+      tags: ['语音合成', '音频下载', '英文朗读']
     },
    {
       id: '4',
@@ -67,6 +67,6 @@ export const toolsData: Tool[] = [
       visits: '1',
       hot: false,
       new: true,
-      tags: ['TTS', '语音合成', '音频下载', '英文朗读']
+      tags: [ '语音合成', '音频下载']
     }
 ];
