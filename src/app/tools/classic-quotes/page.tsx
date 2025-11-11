@@ -34,22 +34,49 @@ export default function ClassicQuotes() {
   const cardRef = useRef<HTMLDivElement | null>(null)
   const swayRef = useRef<gsap.core.Tween | null>(null)
   const [anim, setAnim] = useState<'fade'|'slide'|'scale'|'type'>('fade')
+  const [remoteQuotes, setRemoteQuotes] = useState<Quote[] | null>(null)
 
-  useEffect(() => { // 模拟 API 连接
-    const t = setTimeout(() => { Math.random() < 0.9 ? setApi('ok') : setApi('error') }, 300)
-    return () => clearTimeout(t)
-  }, [])
+  const fetchFeishu = async (forceRefresh = false) => {
+    try {
+      setApi('connecting')
+      const url = `/api/feishu/classic-quotes${forceRefresh ? '?refresh=1' : ''}`
+      const resp = await fetch(url, { cache: 'no-store' })
+      const data = await resp.json()
+      if (!resp.ok || (data && data.error)) throw new Error((data && data.error) || 'Feishu API error')
+      const list = Array.isArray(data.quotes) ? (data.quotes as Array<Record<string, unknown>>) : []
+      const mapped: Quote[] = list.map((it, i) => ({
+        id: typeof it.id === 'number' ? it.id : (typeof it.id === 'string' ? Number(it.id) || i + 1 : i + 1),
+        text: String(it.text ?? ''),
+        author: String(it.author ?? ''),
+        category: String(it.category ?? ''),
+      })).filter(q => q.text.length > 0)
+      setRemoteQuotes(mapped)
+      setUpdatedAt(new Date().toLocaleString())
+      setApi('ok')
+    } catch (e) {
+      console.error(e)
+      setApi('error')
+    }
+  }
 
-  useEffect(() => { // 读取收藏
-    try { const raw = localStorage.getItem('classic_quotes_favs'); if (raw) setFavIds(JSON.parse(raw)) } catch {}
-  }, [])
-  useEffect(() => { // 保存收藏
-    try { localStorage.setItem('classic_quotes_favs', JSON.stringify(favIds)) } catch {}
-  }, [favIds])
-
-  const filtered = () => QUOTES
-
-  const fetchQuote = () => {
+  useEffect(() => { // 初始化拉取飞书数据
+     fetchFeishu(false)
+   }, [])
+   useEffect(() => { // 自动刷新远程数据，保证实时性
+     const t = window.setInterval(() => fetchFeishu(true), 60000)
+     return () => window.clearInterval(t)
+   }, [])
+ 
+   useEffect(() => { // 读取收藏
+     try { const raw = localStorage.getItem('classic_quotes_favs'); if (raw) setFavIds(JSON.parse(raw)) } catch {}
+   }, [])
+   useEffect(() => { // 保存收藏
+     try { localStorage.setItem('classic_quotes_favs', JSON.stringify(favIds)) } catch {}
+   }, [favIds])
+ 
+   const filtered = () => (remoteQuotes && remoteQuotes.length ? remoteQuotes : QUOTES)
+ 
+   const fetchQuote = () => {
     setLoading(true); setSlow(false); setErr(null)
     const start = Date.now(); const delay = 300 + Math.random()*2500
     setTimeout(() => {
@@ -63,7 +90,7 @@ export default function ClassicQuotes() {
     }, delay)
   }
 
-  useEffect(() => { fetchQuote() }, [api])
+  useEffect(() => { if (api==='ok') fetchQuote() }, [api])
   useEffect(() => { // 自动更新定时器，类型使用 number 以兼容 DOM
     let t: number | null = null
     if (auto) t = window.setInterval(fetchQuote, 5000)
@@ -112,7 +139,7 @@ export default function ClassicQuotes() {
   const toggleFav = () => { if (!q) return; setFavIds(p => p.includes(q.id) ? p.filter(i => i !== q.id) : [...p, q.id]) }
   const retryApi = () => { setApi('connecting'); setTimeout(() => { Math.random() < 0.95 ? setApi('ok') : setApi('error') }, 500) }
 
-  const favList = QUOTES.filter(x => favIds.includes(x.id))
+  const favList = filtered().filter(x => favIds.includes(x.id))
 
   // 卡片容器 GSAP 动画：平滑左右摇摆 + 切换淡入
   useEffect(() => {
@@ -155,13 +182,9 @@ export default function ClassicQuotes() {
       </div>
 
       {/* 中间内容区 */}
-      <div className="max-w-4xl mx-auto px-4 py-8 pb-[72px]" aria-live="polite">
+      <div className="max-w-4xl mx-auto px-4 pt-[80px] pb-[60px]" aria-live="polite">
         {!favView && (
           <div ref={cardRef} className="bg-white rounded-[12px] border border-gray-200 shadow-[0_4px_16px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out hover:-translate-y-[5px] p-[50px] max-w-[600px] mx-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[18px] md:text-[20px] font-semibold text-[#2563eb]">飞书语录精选</h2>
-            </div>
-
             {loading && (
               <div className="text-center text-[#94a3b8]">
                 <div className="text-2xl inline-block animate-[wobble_1.2s_ease-in-out_infinite]">📜 语录加载中...</div>
@@ -184,14 +207,14 @@ export default function ClassicQuotes() {
                 </div>
                 <div ref={authorRef} className="text-right text-[#718096] text-[18px] font-light mb-[30px]">—— {q.author}</div>
                 <div className="flex justify-center gap-4 md:gap-6 mt-4">
-                  <button onClick={fetchQuote} className="h-10 px-5 rounded-lg bg-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors shadow-sm">
-                    <span className="inline-flex items-center gap-2">
-                      <span className="inline-block w-[18px] h-[18px] rounded-full border-2 border-white" />
-                      换一条
-                    </span>
-                  </button>
-                  <button onClick={() => { setApi('connecting'); setTimeout(() => setApi('ok'), 1000) }} className="h-10 px-5 rounded-lg bg-[#f3f4f6] text-gray-700 hover:bg-[#e5e7eb] transition-colors">刷新最新</button>
-                  <button onClick={toggleFav} aria-label="收藏" className="h-10 w-10 rounded-full text-[#94a3b8] hover:text-[#f59e0b] transition-transform hover:scale-110">
+                  <button onClick={fetchQuote} className="w-[140px] h-[40px] rounded-[8px] bg-[#2563eb] text-white hover:bg-[#1d4ed8] transition-colors shadow-sm">
+                     <span className="inline-flex items-center gap-[8px]">
+                       <span className="inline-block w-[18px] h-[18px] rounded-full border-2 border-white" />
+                       换一条
+                     </span>
+                   </button>
+                   <button onClick={() => { fetchFeishu(true); fetchQuote(); }} className="w-[140px] h-[40px] rounded-[8px] bg-[#f3f4f6] text-[#4b5563] hover:bg-[#e5e7eb] transition-colors">刷新最新</button>
+                  <button onClick={toggleFav} aria-label="收藏" className={`${q && favIds.includes(q.id) ? 'text-[#f59e0b]' : 'text-[#94a3b8]'} h-10 w-10 rounded-full transition-transform hover:scale-110`}>
                     <svg viewBox="0 0 24 24" className="w-5 h-5 mx-auto" fill="currentColor">
                       <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z" />
                     </svg>

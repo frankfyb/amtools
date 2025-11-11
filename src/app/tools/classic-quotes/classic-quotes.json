@@ -1,0 +1,602 @@
+{
+  "source": "feishu-bitable",
+  "updatedAt": "2025-11-11T11:14:42.940Z",
+  "schema": [
+    {
+      "type": 1
+    },
+    {
+      "type": 4
+    },
+    {
+      "type": 3
+    },
+    {
+      "type": 5
+    },
+    {
+      "type": 4
+    },
+    {
+      "type": 21
+    }
+  ],
+  "records": [
+    {
+      "record_id": "recfBRfFgd",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "渐进式的学习方法，不仅可以帮助你持续扩展知识边界，还能确保知识的及时更新。"
+      }
+    },
+    {
+      "record_id": "recu2WCH1O",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "信息到智慧的进化是一个动态的、渐进的过程，涉及信息的收集、知识的构建和智慧的形成"
+      }
+    },
+    {
+      "record_id": "recGQGFEsv",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": " 知识是人类特有的资源，书上没有知识，书上只有信息，知识是在特殊的工作和行动中运用信息的能力。"
+      }
+    },
+    {
+      "record_id": "recR0UG7V3",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "头脑的价值在于思考和创造，而非记忆。"
+      }
+    },
+    {
+      "record_id": "recnjOFBxs",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "劳动也是运动"
+      }
+    },
+    {
+      "record_id": "recWEIxPk8",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "学习成本最低"
+      }
+    },
+    {
+      "record_id": "recVCXvOkN",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "我们卖的不仅仅是产品，还有人格；用户购买的也不仅仅是产品，更是一种价值观认同。"
+      }
+    },
+    {
+      "record_id": "rec45AzYYd",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "逻辑思维搭建知识的 “骨架”，理解其内在逻辑"
+      }
+    },
+    {
+      "record_id": "rec9wkxttP",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "结构化思维梳理知识的 “层次”，形成体系；"
+      }
+    },
+    {
+      "record_id": "recFoSulnG",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "批判性思维深化理解，区分 “事实” 与 “观点”；"
+      }
+    },
+    {
+      "record_id": "recuWt6rlDszV5",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "用成长性思维应对学习中的困难，保持动力；"
+      }
+    },
+    {
+      "record_id": "recuWt6DXwhmcA",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "全程用元认知思维反思学习过程，及时优化方法"
+      }
+    },
+    {
+      "record_id": "recuWt7BbiYmcE",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "费曼技巧的核心是 “用简单语言解释复杂内容”，适合检验学习效果并强化记忆。"
+      }
+    },
+    {
+      "record_id": "recuWt8fclCBSg",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "无论你定位在什么领域，长期持续地输出相关内容都是最重要的。因为长期持续输出才有积累，有积累才有专业影响力，这个才是别人信任和认可你的基础。"
+      }
+    },
+    {
+      "record_id": "recuWWkRMEQi0w",
+      "fields": {
+        "books": [
+          {
+            "record_ids": [
+              "recuWWhqtzBH8y"
+            ],
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text": "海绵阅读法",
+            "text_arr": [
+              "海绵阅读法"
+            ],
+            "type": "text"
+          }
+        ],
+        "sentence": "读书不再是“随随便便”地读，而是带着明确的目的、充满主动性地去读",
+        "source": "books",
+        "time": 1758187800000,
+        "type": [
+          "Expressed "
+        ]
+      }
+    },
+    {
+      "record_id": "recuX8CcNfRdZd",
+      "fields": {
+        "books": [
+          {
+            "record_ids": [
+              "recuWWhqtzBH8y"
+            ],
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text": "海绵阅读法",
+            "text_arr": [
+              "海绵阅读法"
+            ],
+            "type": "text"
+          }
+        ],
+        "sentence": "不断优化自己阅读方式，才能带来质量提升。",
+        "source": "books",
+        "time": 1758186220941,
+        "type": [
+          "Expressed "
+        ]
+      }
+    },
+    {
+      "record_id": "recuX8CeMaVZ6d",
+      "fields": {
+        "books": [
+          {
+            "record_ids": [
+              "recuWWhqtzBH8y"
+            ],
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text": "海绵阅读法",
+            "text_arr": [
+              "海绵阅读法"
+            ],
+            "type": "text"
+          }
+        ],
+        "sentence": "阅读不是孤立的事情，需要结合我们的目标才能有效演能力养成。",
+        "source": "books",
+        "time": 1758186228562,
+        "type": [
+          "Expressed "
+        ]
+      }
+    },
+    {
+      "record_id": "recuX8Cg2VejsY",
+      "fields": {
+        "books": [
+          {
+            "record_ids": [
+              "recuWWhqtzBH8y"
+            ],
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text": "海绵阅读法",
+            "text_arr": [
+              "海绵阅读法"
+            ],
+            "type": "text"
+          }
+        ],
+        "sentence": "知道的越多，对自己的无知的认知越充分。越不会产生妄自菲薄的优越感。",
+        "source": "books",
+        "time": 1758186233445,
+        "type": [
+          "Expressed "
+        ]
+      }
+    },
+    {
+      "record_id": "recuX8CnaeGs7x",
+      "fields": {
+        "books": [
+          {
+            "record_ids": [
+              "recuWWhqtzBH8y"
+            ],
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text": "海绵阅读法",
+            "text_arr": [
+              "海绵阅读法"
+            ],
+            "type": "text"
+          }
+        ],
+        "sentence": "时间都站在她这边胜之不武。",
+        "source": "books",
+        "time": 1758186260806,
+        "type": [
+          "Expressed "
+        ]
+      }
+    },
+    {
+      "record_id": "recuX8Cnf1rF8i",
+      "fields": {
+        "books": [
+          {
+            "record_ids": [
+              "recuWWhqtzBH8y"
+            ],
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text": "海绵阅读法",
+            "text_arr": [
+              "海绵阅读法"
+            ],
+            "type": "text"
+          }
+        ],
+        "sentence": "读书的意义大概就是用生活所感去读书，用读书所得去生活吧。",
+        "source": "books",
+        "time": 1758186261103,
+        "type": [
+          "Expressed "
+        ]
+      }
+    },
+    {
+      "record_id": "recuX8Dignoycq",
+      "fields": {
+        "books": [
+          {
+            "record_ids": [
+              "recuWWhqtzBH8y"
+            ],
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text": "海绵阅读法",
+            "text_arr": [
+              "海绵阅读法"
+            ],
+            "type": "text"
+          }
+        ],
+        "sentence": "只见树木，不见森林。",
+        "source": "books",
+        "time": 1758186480295,
+        "type": [
+          "Expressed "
+        ]
+      }
+    },
+    {
+      "record_id": "recuX8DkPSJrCb",
+      "fields": {
+        "books": [
+          {
+            "record_ids": [
+              "recuWWhqtzBH8y"
+            ],
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text": "海绵阅读法",
+            "text_arr": [
+              "海绵阅读法"
+            ],
+            "type": "text"
+          }
+        ],
+        "sentence": "读书使人渊博，交谈使人机敏，写作使人严谨。",
+        "source": "books",
+        "time": 1758186490184,
+        "type": [
+          "Expressed "
+        ]
+      }
+    },
+    {
+      "record_id": "recuXcZBbCaLMr",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "对一个内容或者主题的内容特别乱的时候，怎么办，通过思维导图捋顺思维",
+        "source": "person",
+        "time": 1758250901597,
+        "type": [
+          "thought"
+        ]
+      }
+    },
+    {
+      "record_id": "recv2eRGgRyYW3",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "我是一个测试数据",
+        "time": 1762859231349
+      }
+    }
+  ],
+  "quotes": [
+    {
+      "id": 1,
+      "text": "渐进式的学习方法，不仅可以帮助你持续扩展知识边界，还能确保知识的及时更新。",
+      "author": "",
+      "category": "",
+      "_rid": "recfBRfFgd"
+    },
+    {
+      "id": 2,
+      "text": "信息到智慧的进化是一个动态的、渐进的过程，涉及信息的收集、知识的构建和智慧的形成",
+      "author": "",
+      "category": "",
+      "_rid": "recu2WCH1O"
+    },
+    {
+      "id": 3,
+      "text": " 知识是人类特有的资源，书上没有知识，书上只有信息，知识是在特殊的工作和行动中运用信息的能力。",
+      "author": "",
+      "category": "",
+      "_rid": "recGQGFEsv"
+    },
+    {
+      "id": 4,
+      "text": "头脑的价值在于思考和创造，而非记忆。",
+      "author": "",
+      "category": "",
+      "_rid": "recR0UG7V3"
+    },
+    {
+      "id": 5,
+      "text": "劳动也是运动",
+      "author": "",
+      "category": "",
+      "_rid": "recnjOFBxs"
+    },
+    {
+      "id": 6,
+      "text": "学习成本最低",
+      "author": "",
+      "category": "",
+      "_rid": "recWEIxPk8"
+    },
+    {
+      "id": 7,
+      "text": "我们卖的不仅仅是产品，还有人格；用户购买的也不仅仅是产品，更是一种价值观认同。",
+      "author": "",
+      "category": "",
+      "_rid": "recVCXvOkN"
+    },
+    {
+      "id": 8,
+      "text": "逻辑思维搭建知识的 “骨架”，理解其内在逻辑",
+      "author": "",
+      "category": "",
+      "_rid": "rec45AzYYd"
+    },
+    {
+      "id": 9,
+      "text": "结构化思维梳理知识的 “层次”，形成体系；",
+      "author": "",
+      "category": "",
+      "_rid": "rec9wkxttP"
+    },
+    {
+      "id": 10,
+      "text": "批判性思维深化理解，区分 “事实” 与 “观点”；",
+      "author": "",
+      "category": "",
+      "_rid": "recFoSulnG"
+    },
+    {
+      "id": 11,
+      "text": "用成长性思维应对学习中的困难，保持动力；",
+      "author": "",
+      "category": "",
+      "_rid": "recuWt6rlDszV5"
+    },
+    {
+      "id": 12,
+      "text": "全程用元认知思维反思学习过程，及时优化方法",
+      "author": "",
+      "category": "",
+      "_rid": "recuWt6DXwhmcA"
+    },
+    {
+      "id": 13,
+      "text": "费曼技巧的核心是 “用简单语言解释复杂内容”，适合检验学习效果并强化记忆。",
+      "author": "",
+      "category": "",
+      "_rid": "recuWt7BbiYmcE"
+    },
+    {
+      "id": 14,
+      "text": "无论你定位在什么领域，长期持续地输出相关内容都是最重要的。因为长期持续输出才有积累，有积累才有专业影响力，这个才是别人信任和认可你的基础。",
+      "author": "",
+      "category": "",
+      "_rid": "recuWt8fclCBSg"
+    },
+    {
+      "id": 15,
+      "text": "读书不再是“随随便便”地读，而是带着明确的目的、充满主动性地去读",
+      "author": "books",
+      "category": "Expressed ",
+      "_rid": "recuWWkRMEQi0w"
+    },
+    {
+      "id": 16,
+      "text": "不断优化自己阅读方式，才能带来质量提升。",
+      "author": "books",
+      "category": "Expressed ",
+      "_rid": "recuX8CcNfRdZd"
+    },
+    {
+      "id": 17,
+      "text": "阅读不是孤立的事情，需要结合我们的目标才能有效演能力养成。",
+      "author": "books",
+      "category": "Expressed ",
+      "_rid": "recuX8CeMaVZ6d"
+    },
+    {
+      "id": 18,
+      "text": "知道的越多，对自己的无知的认知越充分。越不会产生妄自菲薄的优越感。",
+      "author": "books",
+      "category": "Expressed ",
+      "_rid": "recuX8Cg2VejsY"
+    },
+    {
+      "id": 19,
+      "text": "时间都站在她这边胜之不武。",
+      "author": "books",
+      "category": "Expressed ",
+      "_rid": "recuX8CnaeGs7x"
+    },
+    {
+      "id": 20,
+      "text": "读书的意义大概就是用生活所感去读书，用读书所得去生活吧。",
+      "author": "books",
+      "category": "Expressed ",
+      "_rid": "recuX8Cnf1rF8i"
+    },
+    {
+      "id": 21,
+      "text": "只见树木，不见森林。",
+      "author": "books",
+      "category": "Expressed ",
+      "_rid": "recuX8Dignoycq"
+    },
+    {
+      "id": 22,
+      "text": "读书使人渊博，交谈使人机敏，写作使人严谨。",
+      "author": "books",
+      "category": "Expressed ",
+      "_rid": "recuX8DkPSJrCb"
+    },
+    {
+      "id": 23,
+      "text": "对一个内容或者主题的内容特别乱的时候，怎么办，通过思维导图捋顺思维",
+      "author": "person",
+      "category": "thought",
+      "_rid": "recuXcZBbCaLMr"
+    },
+    {
+      "id": 24,
+      "text": "我是一个测试数据",
+      "author": "",
+      "category": "",
+      "_rid": "recv2eRGgRyYW3"
+    }
+  ]
+}
