@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 export type MosaicShape = 'heart' | 'text' | 'circle'
 
