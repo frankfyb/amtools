@@ -1,413 +1,497 @@
-"use client"
+"use client";
+import gsap from "gsap";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
-import { gsap } from 'gsap'
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { TextPlugin } from 'gsap/TextPlugin'
-import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
-
-gsap.registerPlugin(ScrollTrigger, TextPlugin, MotionPathPlugin)
-
-function spawnParticles(container: HTMLElement, x: number, y: number, type: 'heart' | 'leaf' = 'heart') {
-  const colors = type === 'heart'
-    ? ['#ff6b6b', '#ff8fa3', '#ff4757']
-    : ['#d97706', '#b45309', '#f59e0b']
-  const symbol = type === 'heart' ? '❤' : '🍁'
-  for (let i = 0; i < 10; i++) {
-    const span = document.createElement('span')
-    span.textContent = symbol
-    span.style.position = 'absolute'
-    span.style.left = `${x}px`
-    span.style.top = `${y}px`
-    span.style.pointerEvents = 'none'
-    span.style.fontSize = `${12 + Math.random() * 16}px`
-    span.style.color = colors[Math.floor(Math.random() * colors.length)]
-    container.appendChild(span)
-    const dx = (Math.random() - 0.5) * 120
-    const dy = -60 - Math.random() * 120
-    gsap.to(span, {
-      x: dx,
-      y: dy,
-      rotation: (Math.random() - 0.5) * 120,
-      opacity: 0,
-      duration: 1.2 + Math.random() * 0.8,
-      ease: 'power2.out',
-      onComplete: () => span.remove(),
-    })
-  }
-}
-
-export default function AutumnMy() {
-  const rootRef = useRef<HTMLDivElement | null>(null)
-  const sec1Ref = useRef<HTMLDivElement | null>(null)
-  const sec2Ref = useRef<HTMLDivElement | null>(null)
-  const sec3Ref = useRef<HTMLDivElement | null>(null)
-  const sec4Ref = useRef<HTMLDivElement | null>(null)
-  const sec5Ref = useRef<HTMLDivElement | null>(null)
-  const sec6Ref = useRef<HTMLDivElement | null>(null)
-  const sec2TextRef = useRef<HTMLDivElement | null>(null)
-  const sec2ImgRef = useRef<HTMLDivElement | null>(null)
-  const sec1HeartRef = useRef<HTMLSpanElement | null>(null)
-  const [liked, setLiked] = useState(false)
-  const [showShare, setShowShare] = useState(false)
-  const filmTLRef = useRef<gsap.core.Timeline | null>(null)
-  const fallRefs = useRef<Array<HTMLDivElement | null>>([])
-  const leafRefs = useRef<Array<HTMLSpanElement | null>>([])
-  const filmStripRef = useRef<HTMLDivElement | null>(null)
-
-  const photos = [
-    '/photos/DSC01557.JPG',
-    '/photos/DSC01545.JPG',
-    '/photos/DSC01541.JPG',
-    '/photos/DSC01537.JPG',
-    '/photos/DSC01488.JPG',
-    '/photos/DSC01481.JPG',
-    '/photos/DSC01471.JPG',
-    '/photos/DSC01470.JPG',
-    '/photos/DSC01469.JPG',
-    '/photos/DSC01468.JPG',
-    '/photos/DSC01528.JPG',
-  ]
+export default function AutumnMyPage() {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [showTitle, setShowTitle] = useState(false);
+  const secondImageWrapRef = useRef<HTMLDivElement>(null);
+  const [typedText, setTypedText] = useState("");
+  const cursorRef = useRef<HTMLSpanElement>(null);
+  const poem = "《秋光里的她》我以镜头作笺纸，金风研墨记流年。她携萌兔抬眸瞬，我把深情锁镜间。一地银杏铺诗卷，满林晴色酿清欢。年年此景相携处，爱意如秋岁岁绵。";
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const animatingRef = useRef(false);
+  const touchStartY = useRef(0);
+  const textWrapRef = useRef<HTMLDivElement>(null);
+  const typedStartedRef = useRef(false);
+  const overlayWarmRef = useRef<HTMLDivElement>(null);
+  const overlayVignetteRef = useRef<HTMLDivElement>(null);
+  const thirdText = "金秋风里的叶子轻轻飘落，幸好有你一直陪在我身边。你喜欢的秋日暖阳、街边甜糯的栗子，我都愿意陪着你慢慢尝。那些你在意的小美好，我会一一记在心里，陪你慢慢收集。金黄的银杏叶铺满小路，一年又一年，只想和你手牵手走下去。你向往的人间烟火、山川湖海，我都会陪着你一一抵达。从秋日的落叶到四季的晨昏，你爱的每一处芳华，我都陪你看遍。";
+  const thirdTextRef = useRef<HTMLDivElement>(null);
+  const leavesRef = useRef<HTMLDivElement>(null);
+  const thirdStartedRef = useRef(false);
+  const fifthTextRef = useRef<HTMLDivElement>(null);
+  const fifthIconsRef = useRef<HTMLDivElement>(null);
+  const heartRef = useRef<HTMLDivElement>(null);
+  const [viewer, setViewer] = useState<{ url: string } | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const polaroidsRef = useRef<HTMLDivElement>(null);
+  const polaroidTlRef = useRef<gsap.core.Tween | gsap.core.Timeline | null>(null);
+  type CardStyle = { left: number; top: number; rotate: number; z: number };
+  const URL_ORDER = [
+    3, 7, 1, 12, 5, 9, 2, 18, 4, 10, 6, 14, 8,
+    15, 11, 23, 16, 21, 13, 17, 19, 22, 24, 25, 26, 27,
+  ];
+  const DESKTOP_PRESET: CardStyle[] = [
+    { left: 6, top: 6, rotate: -6, z: 11 },
+    { left: 32, top: 5, rotate: 4, z: 12 },
+    { left: 58, top: 7, rotate: -3, z: 11 },
+    { left: 14, top: 24, rotate: -5, z: 13 },
+    { left: 44, top: 22, rotate: 3, z: 14 },
+    { left: 74, top: 25, rotate: -4, z: 13 },
+    { left: 10, top: 50, rotate: 4, z: 12 },
+    { left: 36, top: 48, rotate: -3, z: 13 },
+    { left: 62, top: 51, rotate: 2, z: 13 },
+  ];
+  const DESKTOP_WIDTHS: number[] = [
+    18, 17, 16, 17, 20, 17, 16, 17, 20,
+  ];
+  const MOBILE_PRESET: CardStyle[] = [
+    { left: 4, top: 6, rotate: -5, z: 12 },
+    { left: 32, top: 4, rotate: 3, z: 13 },
+    { left: 60, top: 6, rotate: -2, z: 12 },
+    { left: 6, top: 32, rotate: -3, z: 13 },
+    { left: 34, top: 30, rotate: 3, z: 14 },
+    { left: 62, top: 32, rotate: -4, z: 13 },
+    { left: 4, top: 60, rotate: 3, z: 12 },
+    { left: 32, top: 58, rotate: -2, z: 13 },
+    { left: 60, top: 60, rotate: 2, z: 13 },
+  ];
+  const desktopStyles: CardStyle[] = DESKTOP_PRESET;
+  const mobileStyles: CardStyle[] = MOBILE_PRESET;
+  const urls: string[] = URL_ORDER.slice(0, 9).map((n) => `https://objectstorageapi.sg-members-1.clawcloudrun.com/cfd6671w-storage/autumn-my/${n}.PNG`);
+  
 
   useEffect(() => {
-    if (sec1Ref.current) {
-      ScrollTrigger.create({
-        trigger: sec1Ref.current,
-        start: 'top 90%'
-      })
-      ScrollTrigger.create({
-        trigger: sec1Ref.current,
-        start: 'top 80%',
-        onEnter: () => {
-          const rect = sec1Ref.current!.getBoundingClientRect()
-          spawnParticles(sec1Ref.current!, rect.width / 2, rect.height * 0.7, 'leaf')
-          if (sec1HeartRef.current) {
-            gsap.fromTo(sec1HeartRef.current, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.6)' })
+    if (showTitle && titleRef.current) {
+      gsap.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }
+      );
+    }
+  }, [showTitle]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!viewer) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setViewer(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [viewer]);
+
+  useEffect(() => {
+    if (activeIndex !== 1) return;
+    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+    if (secondImageWrapRef.current) {
+      tl.fromTo(
+        secondImageWrapRef.current,
+        { scale: 0.98, y: 6, filter: "saturate(0.95) brightness(0.95)" },
+        { scale: 1, y: 0, filter: "saturate(1.05) brightness(1)", duration: 0.9 },
+        0
+      );
+    }
+    if (overlayWarmRef.current) {
+      tl.fromTo(overlayWarmRef.current, { opacity: 0 }, { opacity: 1, duration: 0.8 }, 0);
+    }
+    if (overlayVignetteRef.current) {
+      tl.fromTo(overlayVignetteRef.current, { opacity: 0.4 }, { opacity: 0.6, duration: 0.8 }, 0);
+    }
+    if (textWrapRef.current) {
+      tl.fromTo(
+        textWrapRef.current,
+        { opacity: 0, y: 10, filter: "blur(2px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9 },
+        0.2
+      );
+    }
+
+    if (!typedStartedRef.current) {
+      typedStartedRef.current = true;
+      const obj = { i: 0 } as { i: number };
+      const cursorEl = cursorRef.current;
+      gsap.to(obj, {
+        i: poem.length,
+        duration: poem.length * 0.1,
+        ease: "none",
+        onUpdate: () => {
+          setTypedText(poem.slice(0, Math.floor(obj.i)));
+        },
+        onComplete: () => {
+          if (cursorEl) {
+            gsap.to(cursorEl, { opacity: 0, duration: 0.4, repeat: 3, yoyo: true });
           }
         },
-        onLeaveBack: () => {
-          if (sec1HeartRef.current) gsap.to(sec1HeartRef.current, { opacity: 0, scale: 0.6, duration: 0.4 })
-        }
-      })
+      });
     }
 
-    if (sec2Ref.current) {
-      ScrollTrigger.create({
-        trigger: sec2Ref.current,
-        start: 'top 80%',
-        toggleActions: 'play reverse play reverse',
-        onEnter: () => {
-          if (sec2TextRef.current) {
-            gsap.set(sec2TextRef.current, { text: '' })
-            gsap.to(sec2TextRef.current, { duration: 6.0, text: '那天的风带着桂花香，你穿米白色毛衣，站在枫叶堆前笑的时候，我突然觉得——秋天就该是这个样子。', ease: 'none' })
-          }
-          if (sec2ImgRef.current) {
-            gsap.fromTo(sec2ImgRef.current, { opacity: 0, filter: 'blur(6px)', scale: 0.96 }, { opacity: 1, filter: 'blur(0px)', scale: 1, duration: 1.2, ease: 'power2.out' })
-          }
+    return () => {
+      tl.kill();
+    };
+  }, [activeIndex]);
+
+  
+
+  useEffect(() => {
+    if (activeIndex !== 2 || thirdStartedRef.current) return;
+    thirdStartedRef.current = true;
+    const container = thirdTextRef.current;
+    if (container) {
+      const lines = Array.from(container.querySelectorAll("span"));
+      gsap.to(lines, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.15,
+      });
+    }
+    if (leavesRef.current) {
+      const leaves = Array.from(leavesRef.current.querySelectorAll("span"));
+      leaves.forEach((leaf, idx) => {
+        const startX = Math.random() * window.innerWidth;
+        leaf.style.left = `${startX}px`;
+        leaf.style.top = `-20px`;
+        gsap.to(leaf, {
+          y: window.innerHeight + 60,
+          x: startX + (Math.random() * 120 - 60),
+          rotation: Math.random() * 180 - 90,
+          duration: 6 + Math.random() * 4,
+          ease: "power1.inOut",
+          repeat: -1,
+          delay: idx * 0.35,
+        });
+      });
+    }
+  }, [activeIndex]);
+
+  useEffect(() => {
+    if (activeIndex !== 3) return;
+    const container = polaroidsRef.current;
+    if (!container) return;
+    const cards = Array.from(container.querySelectorAll("button"));
+    polaroidTlRef.current?.kill();
+    polaroidTlRef.current = gsap.to(cards, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.6,
+      ease: "power2.out",
+      stagger: 0.06,
+      startAt: { opacity: 0, y: 20, scale: 0.95 },
+    });
+    return () => {
+      polaroidTlRef.current?.kill();
+    };
+  }, [activeIndex]);
+
+  useEffect(() => {
+    if (activeIndex !== 4) return;
+    const container = fifthTextRef.current;
+    const icons = fifthIconsRef.current;
+    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+    if (container) {
+      const lines = Array.from(container.querySelectorAll("span"));
+      tl.fromTo(lines, { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.2 }, 0);
+    }
+    if (icons) {
+      const iconSpans = Array.from(icons.querySelectorAll("span"));
+      tl.fromTo(iconSpans, { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.5, stagger: 0.15 }, "+=0.2");
+      tl.fromTo(icons, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 }, "+=0.2");
+    }
+    return () => { tl.kill(); };
+  }, [activeIndex]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || !wrapperRef.current) return;
+    const goTo = (index: number) => {
+      animatingRef.current = true;
+      gsap.to(wrapperRef.current, {
+        y: -window.innerHeight * index,
+        duration: 0.8,
+        ease: "power2.out",
+        onComplete: () => {
+          setActiveIndex(index);
+          animatingRef.current = false;
         },
-        onLeaveBack: () => {
-          if (sec2TextRef.current) gsap.set(sec2TextRef.current, { text: '' })
-          if (sec2ImgRef.current) gsap.to(sec2ImgRef.current, { opacity: 0, filter: 'blur(6px)', duration: 0.6 })
-        }
-      })
-    }
-
-    if (sec3Ref.current) {
-      ScrollTrigger.create({
-        trigger: sec3Ref.current,
-        start: 'top 85%',
-        onEnter: () => {
-          const tiles = sec3Ref.current!.querySelectorAll('.film-tile')
-          gsap.from(sec3Ref.current!, { scale: 0.95, opacity: 0, duration: 1.0, ease: 'power2.out' })
-          tiles.forEach((t, i) => gsap.from(t, { opacity: 0, y: 24, duration: 0.6, delay: 0.2 + i * 0.12, ease: 'power2.out' }))
-          const thumbs = sec3Ref.current!.querySelectorAll('.thumb')
-          thumbs.forEach((th, i) => gsap.to(th, { rotate: 360, duration: 5 + i, repeat: -1, ease: 'none' }))
-        },
-        onLeaveBack: () => {
-          gsap.to(sec3Ref.current!, { opacity: 0.6, scale: 0.98, duration: 0.5 })
-        }
-      })
-    }
-
-    if (sec4Ref.current) {
-      const lines = sec4Ref.current.querySelectorAll('.poem-line')
-      lines.forEach((el, i) => {
-        gsap.from(el, {
-          scrollTrigger: { trigger: el as Element, start: 'top 90%', toggleActions: 'play reverse play reverse' },
-          opacity: 0,
-          y: -20,
-          duration: 0.8,
-          delay: i * 0.3,
-          ease: 'power2.out'
-        })
-      })
-      ScrollTrigger.create({
-        trigger: sec4Ref.current,
-        start: 'top 85%',
-        onEnter: () => {
-          const rect = sec4Ref.current!.getBoundingClientRect()
-          spawnParticles(sec4Ref.current!, rect.width * 0.5, rect.height * 0.3, 'heart')
-        }
-      })
-    }
-
-    if (sec5Ref.current) {
-      ScrollTrigger.create({
-        trigger: sec5Ref.current,
-        start: 'top 85%',
-        onEnter: () => {
-          if (filmTLRef.current) filmTLRef.current.kill()
-          const root = sec5Ref.current!
-          const rootRect = root.getBoundingClientRect()
-          const filmRect = filmStripRef.current?.getBoundingClientRect()
-          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-          const tiles = fallRefs.current.filter(Boolean) as HTMLDivElement[]
-          const leaves = leafRefs.current.filter(Boolean) as HTMLSpanElement[]
-          tiles.forEach((t, i) => {
-            gsap.set(t, { x: 0, y: -120, scale: 0.9, opacity: 0, willChange: 'transform' })
-            gsap.set(leaves[i], { x: 0, y: -120, opacity: 0.8, rotate: -20 })
-          })
-
-          const tl = gsap.timeline({ defaults: { ease: 'power1.out' } })
-          tiles.forEach((tile, i) => {
-            const startX = (rootRect.width * 0.15) + Math.random() * (rootRect.width * 0.7)
-            const drift1 = (-40 + Math.random() * 80)
-            const drift2 = (-40 + Math.random() * 80)
-            const path = [
-              { x: startX, y: -120 },
-              { x: startX + drift1, y: rootRect.height * 0.25 },
-              { x: startX + drift2, y: rootRect.height * 0.55 },
-              { x: rootRect.width * 0.5, y: rootRect.height * 0.72 },
-            ]
-
-            tl.to(tile, {
-              duration: prefersReduced ? 0.01 : 1.8 + Math.random() * 0.8,
-              opacity: 1,
-              motionPath: { path, curviness: 1.25 },
-              rotate: -4 + Math.random() * 8,
-              force3D: true,
-            }, i * 0.15)
-
-            tl.to(leaves[i], {
-              duration: prefersReduced ? 0.01 : 1.8 + Math.random() * 0.8,
-              motionPath: { path, curviness: 1.25 },
-              rotate: 30 + Math.random() * 40,
-              ease: 'sine.inOut',
-              force3D: true,
-            }, i * 0.15)
-
-            const cx = rootRect.width * 0.5
-            const cy = rootRect.height * 0.5
-            tl.to(tile, {
-              duration: prefersReduced ? 0.01 : 0.8,
-              x: cx - 60 + i * 6,
-              y: cy - 40 + i * 4,
-              scale: 0.95,
-              zIndex: 10 + i,
-              boxShadow: '0 8px 24px rgba(0,0,0,0.35)',
-            }, '>-0.2')
-          })
-
-          if (filmRect) {
-            const cols = 4
-            const rows = 2
-            const cellW = filmRect.width / cols
-            const cellH = filmRect.height / rows
-            tiles.forEach((tile, i) => {
-              const col = i % cols
-              const row = Math.floor(i / cols)
-              const tx = (filmRect.left - rootRect.left) + cellW * (col + 0.5) - 80
-              const ty = (filmRect.top - rootRect.top) + cellH * (row + 0.5) - 56
-              tl.to(tile, {
-                duration: prefersReduced ? 0.01 : 0.9,
-                x: tx,
-                y: ty,
-                scale: 1,
-                rotate: 0,
-                zIndex: 30 + i,
-              }, '+=0.2')
-            })
-            tl.to(filmStripRef.current, { opacity: 1, duration: 0.6 }, '>-0.4')
-          }
-
-          filmTLRef.current = tl
-        },
-        onLeaveBack: () => {
-          filmTLRef.current?.kill()
-          const tiles = fallRefs.current.filter(Boolean) as HTMLDivElement[]
-          const leaves = leafRefs.current.filter(Boolean) as HTMLSpanElement[]
-          tiles.forEach(t => gsap.set(t, { x: 0, y: -120, opacity: 0 }))
-          leaves.forEach(l => gsap.set(l, { x: 0, y: -120, opacity: 0 }))
-          if (filmStripRef.current) gsap.set(filmStripRef.current, { opacity: 0 })
-        }
-      })
-    }
-
-    if (sec6Ref.current) {
-      ScrollTrigger.create({
-        trigger: sec6Ref.current,
-        start: 'top 85%'
-      })
-    }
-  }, [])
+      });
+    };
+    const onWheel = (e: WheelEvent) => {
+      if (animatingRef.current) return;
+      if (e.deltaY > 30 && activeIndex === 0) {
+        e.preventDefault();
+        goTo(1);
+      } else if (e.deltaY > 30 && activeIndex === 1) {
+        e.preventDefault();
+        goTo(2);
+      } else if (e.deltaY > 30 && activeIndex === 2) {
+        e.preventDefault();
+        goTo(3);
+      } else if (e.deltaY > 30 && activeIndex === 3) {
+        e.preventDefault();
+        goTo(4);
+      } else if (e.deltaY < -30 && activeIndex === 1) {
+        e.preventDefault();
+        goTo(0);
+      } else if (e.deltaY < -30 && activeIndex === 2) {
+        e.preventDefault();
+        goTo(1);
+      } else if (e.deltaY < -30 && activeIndex === 3) {
+        e.preventDefault();
+        goTo(2);
+      } else if (e.deltaY < -30 && activeIndex === 4) {
+        e.preventDefault();
+        goTo(3);
+      }
+    };
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      const dy = e.changedTouches[0].clientY - touchStartY.current;
+      if (!animatingRef.current && dy < -60 && activeIndex === 0) {
+        goTo(1);
+      } else if (!animatingRef.current && dy < -60 && activeIndex === 1) {
+        goTo(2);
+      } else if (!animatingRef.current && dy < -60 && activeIndex === 2) {
+        goTo(3);
+      } else if (!animatingRef.current && dy < -60 && activeIndex === 3) {
+        goTo(4);
+      } else if (!animatingRef.current && dy > 60 && activeIndex === 1) {
+        goTo(0);
+      } else if (!animatingRef.current && dy > 60 && activeIndex === 2) {
+        goTo(1);
+      } else if (!animatingRef.current && dy > 60 && activeIndex === 3) {
+        goTo(2);
+      } else if (!animatingRef.current && dy > 60 && activeIndex === 4) {
+        goTo(3);
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchend", onTouchEnd, { passive: true });
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [activeIndex]);
 
   return (
-    <div ref={rootRef} className="min-h-screen text-rose-900">
-      <section ref={sec1Ref} className="h-screen w-full relative overflow-hidden">
-        <Image src="/photos/DSC01528.JPG" alt="autumn" fill sizes="100vw" className="object-cover" priority unoptimized />
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <div className="text-amber-300 text-base tracking-wide">2025·秋</div>
-          <div className="mt-2 text-5xl sm:text-6xl lg:text-7xl font-extrabold text-amber-100">我的秋天</div>
-          <div className="mt-2 text-4xl sm:text-5xl text-rose-400 flex items-center gap-2">
-            <span>是你</span>
-            <span ref={sec1HeartRef} className="text-rose-500">❤</span>
-          </div>
-        </div>
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/90">↓</div>
-        <div className="absolute left-1/4 top-12 text-2xl">🍁</div>
-        <div className="absolute left-2/3 top-24 text-xl">🍁</div>
-        <div className="absolute right-1/4 top-10 text-3xl">🍁</div>
-      </section>
+    <main ref={containerRef} className="h-[100vh] w-full overflow-hidden">
+      <div ref={wrapperRef} className="relative w-full">
+      <section className="relative h-[100vh] w-full">
+        <Image
+          src="https://objectstorageapi.sg-members-1.clawcloudrun.com/cfd6671w-storage/autumn-my/1.PNG"
+          alt="Autumn Background"
+          fill
+          priority
+          quality={90}
+          sizes="100vw"
+          className="object-cover"
+        />
 
-      <section ref={sec2Ref} className="h-screen w-full grid md:grid-cols-2 gap-8 items-center px-6 bg-gradient-to-r from-[#FF9F43] to-[#FDCB6E]">
-        <div className="order-2 md:order-1">
-          <div className="text-2xl text-red-600 mb-3">初见</div>
-          <div className="text-xl sm:text-2xl flex items-baseline">
-            <div ref={sec2TextRef} className="font-medium text-rose-900" />
-            <span className="ml-2 text-red-500">|</span>
+        <div
+          onClick={() => {
+            if (!showTitle) {
+              setShowTitle(true);
+              return;
+            }
+            if (titleRef.current) {
+              gsap.to(titleRef.current, {
+                scale: 1.08,
+                letterSpacing: "0.1em",
+                duration: 0.8,
+                ease: "power2.out",
+                yoyo: true,
+                repeat: 1,
+              });
+            }
+          }}
+          className="absolute inset-0 flex justify-center items-start pt-24 md:items-center md:pt-0"
+        >
+          {showTitle && (
+            <h1 ref={titleRef} className="text-4xl md:text-6xl font-serif text-white tracking-wide">
+              2025 秋
+            </h1>
+          )}
+        </div>
+      </section>
+      <section className="relative h-[100vh] w-full flex flex-col md:flex-row bg-gradient-to-b from-amber-50 via-rose-50 to-amber-100 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900">
+        <div ref={secondImageWrapRef} className="relative w-full md:w-1/2 h-1/2 md:h-full">
+          <Image
+            src="https://objectstorageapi.sg-members-1.clawcloudrun.com/cfd6671w-storage/autumn-my/2.PNG"
+            alt="Autumn Side"
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            quality={85}
+            className="object-cover object-center brightness-[1.0] contrast-105 saturate-105"
+          />
+          <div ref={overlayWarmRef} className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-amber-200/20 via-rose-200/10 to-transparent mix-blend-soft-light" />
+          <div ref={overlayVignetteRef} className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-60" style={{ backgroundImage: "radial-gradient(120% 80% at 50% 50%, rgba(255,220,160,0.10) 0%, rgba(255,220,160,0.08) 40%, rgba(0,0,0,0.25) 100%)" }} />
+          <div className="pointer-events-none absolute inset-0 bg-black/15 mix-blend-multiply" />
+        </div>
+        <div className="flex w-full md:w-1/2 items-center justify-center p-6">
+          <div ref={textWrapRef} className=" text-stone-700 font-serif text-xl md:text-2xl bg-white/10 backdrop-blur-md ring-1 ring-white/20 rounded-xl shadow-xl p-4 md:p-6 text-center md:text-left leading-relaxed md:leading-loose space-y-2 md:space-y-3 tracking-wide">
+            {typedText
+              .split(/(?<=[，。；！？》])/)
+              .filter(Boolean)
+              .map((line, i, arr) => (
+                <span key={i} className="block tracking-wider md:tracking-widest">
+                  {line}
+                  {i === arr.length - 1 && (
+                    <span ref={cursorRef} className="inline-block ml-1 align-baseline text-stone-700">|</span>
+                  )}
+                </span>
+              ))}
           </div>
         </div>
-        <div className="order-1 md:order-2">
-          <div
-            ref={sec2ImgRef}
-            className="group relative h-64 sm:h-80 lg:h-96 rounded-3xl overflow-hidden shadow-xl"
-          >
+      </section>
+      <section className="relative h-[100vh] w-full overflow-hidden">
+        <div className="absolute inset-0">
+          <div ref={leavesRef} className="pointer-events-none absolute inset-0">
+            {Array.from({ length: 18 }).map((_, i) => (
+              <span key={i} className="absolute text-amber-400">🍂</span>
+            ))}
+          </div>
+        </div>
+        <div ref={thirdTextRef} className="absolute inset-0 flex items-center justify-center p-6">
+          <div className="max-w-xl text-stone-800 font-serif text-xl md:text-2xl leading-relaxed md:leading-loose text-center md:text-left">
+            {thirdText
+              .split(/(?<=[，。；！？])/)
+              .filter(Boolean)
+              .map((line, i) => (
+                <span key={i} className="block opacity-0 translate-y-[10px] tracking-wide md:tracking-wider">{line}</span>
+              ))}
+          </div>
+        </div>
+      </section>
+      <section className="relative h-[100vh] w-full bg-black overflow-hidden">
+        <div ref={polaroidsRef} className="absolute inset-0">
+          {/* Desktop: absolute canvas; Mobile: grid fallback */}
+          <div className="hidden md:block w-full h-full relative">
+            {urls && urls.map((src, i) => {
+              const s = desktopStyles[i];
+              const rotate = s?.rotate ?? 0;
+              const x = s ? s.left : 50;
+              const y = s ? s.top : 50;
+              const z = s ? s.z : 10;
+              return (
+                <button
+                  key={i}
+                  onClick={() => setViewer({ url: src })}
+                  type="button"
+                  className="absolute transition-transform duration-300 hover:scale-[1.03] active:scale-[1.01]"
+                  style={{ left: `${x}%`, top: `${y}%`, zIndex: 100 + z, transform: `rotate(${rotate}deg)` }}
+                >
+                  <div className="relative bg-white rounded-[3px] shadow-[0_10px_28px_rgba(0,0,0,0.35)] ring-1 ring-stone-200/70 p-2 pb-6">
+                    <div className="relative aspect-[3/4]" style={{ width: `${DESKTOP_WIDTHS[i] ?? 18}vw` }}>
+                      <Image
+                        src={src}
+                        alt={`polaroid-${i + 1}`}
+                        fill
+                        sizes="(min-width:768px) 18vw"
+                        quality={85}
+                        className="object-cover"
+                        unoptimized
+                        loading={i > 3 ? 'lazy' : undefined}
+                      />
+                      <div className="pointer-events-none absolute inset-0 rounded-[2px] opacity-15 mix-blend-overlay" style={{ backgroundImage: "radial-gradient(120% 120% at 50% 50%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 40%, rgba(0,0,0,0.15) 100%)" }} />
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          <div className="md:hidden w-full h-full relative">
+            {urls && mobileStyles.map((s, i) => {
+              const src = urls[i];
+              return (
+                <button
+                  key={i}
+                  onClick={() => setViewer({ url: src })}
+                  type="button"
+                  className="absolute transition-transform duration-300 active:scale-[0.99]"
+                  style={{ left: `${s.left}%`, top: `${s.top}%`, zIndex: 10 + s.z, transform: `rotate(${s.rotate}deg)` }}
+                >
+                  <div className="relative bg-white rounded-[3px] shadow-[0_8px_22px_rgba(0,0,0,0.35)] ring-1 ring-stone-200/70 p-2 pb-6">
+                    <div className="relative aspect-[3/4]" style={{ width: `${(i % 3 === 1 ? 40 : 36)}vw` }}>
+                      <Image
+                        src={src}
+                        alt={`polaroid-${i + 1}`}
+                        fill
+                        sizes="(max-width:768px) 42vw"
+                        quality={85}
+                        className="object-cover"
+                        unoptimized
+                        loading={i > 2 ? 'lazy' : undefined}
+                      />
+                      <div className="pointer-events-none absolute inset-0 rounded-[2px] opacity-15 mix-blend-overlay" style={{ backgroundImage: "radial-gradient(120% 120% at 50% 50%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 40%, rgba(0,0,0,0.15) 100%)" }} />
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        {mounted && viewer && createPortal(
+          (
             <div
-              className="absolute inset-0"
-              style={{ clipPath: 'polygon(50% 10%, 65% 25%, 80% 40%, 85% 60%, 75% 75%, 50% 90%, 25% 75%, 15% 60%, 20% 40%, 35% 25%)' }}
+              className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
+              onClick={() => setViewer(null)}
             >
-              <Image src={photos[2]} alt="park" fill sizes="(max-width:768px) 90vw, 50vw" className="object-cover scale-110" unoptimized />
+              <div className="relative w-screen h-screen" onClick={() => setViewer(null)}>
+                <button
+                  type="button"
+                  onClick={() => setViewer(null)}
+                  className="absolute top-3 right-3 z-[10000] rounded-full bg-white/80 text-stone-900 px-3 py-2 md:px-4 md:py-2"
+                >
+                  ×
+                </button>
+                <Image
+                  src={viewer.url}
+                  alt="viewer"
+                  fill
+                  sizes="100vw"
+                  quality={90}
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-tr from-rose-200/40 via-amber-200/30 to-orange-200/30 mix-blend-multiply" />
-            <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-105" />
-          </div>
-        </div>
-      </section>
-
-
-      <section ref={sec4Ref} className="h-screen w-full relative flex items-center justify-center bg-[#F8F4E9]">
-        <div className="absolute inset-0">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="absolute" style={{ left: `${10 + i * 10}%`, top: `${20 + (i % 5) * 12}%`, opacity: 0.25, fontSize: 12 + (i % 4) * 4 }}>
-              ❤
-            </div>
-          ))}
-        </div>
-        <div className="flex gap-8">
-          <div className="poem-line text-red-600 text-xl" style={{ writingMode: 'vertical-rl' }}>
-            枫叶落了又落
-          </div>
-          <div className="poem-line text-red-600 text-xl" style={{ writingMode: 'vertical-rl' }}>
-            桂香散了又来
-          </div>
-          <div className="poem-line text-red-600 text-xl" style={{ writingMode: 'vertical-rl' }}>
-            我见过无数个秋天的样子
-          </div>
-          <div className="poem-line text-red-600 text-xl" style={{ writingMode: 'vertical-rl' }}>
-            直到遇见你才明白
-          </div>
-          <div className="poem-line text-red-600 text-xl" style={{ writingMode: 'vertical-rl' }}>
-            我的秋天不是风不是叶
-          </div>
-          <div className="poem-line text-red-600 text-xl" style={{ writingMode: 'vertical-rl' }}>
-            是你笑起来时眼里的光
-          </div>
-        </div>
-        <div className="absolute bottom-10 flex gap-4 text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(45deg, #FF9F43, #E74C3C)' }}>
-          <span className="floating">秋天</span>
-          <span className="floating">你</span>
-          <span className="floating">桂香</span>
-          <span className="floating">笑</span>
-        </div>
-        <div className="absolute bottom-6 text-red-600">❤</div>
-      </section>
-
-      <section ref={sec5Ref} className="h-screen w-full relative overflow-hidden bg-gradient-to-b from-[#222222] to-[#0d0d0d]">
-        <div className="absolute inset-0">
-          {photos.slice(0, 8).map((src, i) => (
-            <div key={i} className="absolute" style={{ left: 0, top: 0 }}>
-              <span ref={el => { leafRefs.current[i] = el }} className="absolute select-none" style={{ fontSize: 18 + (i % 3) * 4 }}>
-                🍁
-              </span>
-              <div
-                ref={el => { fallRefs.current[i] = el }}
-                className="relative w-36 h-24 sm:w-40 sm:h-28 lg:w-48 lg:h-32 rounded-md overflow-hidden shadow-xl"
-                style={{ backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-              />
-            </div>
-          ))}
-        </div>
-        <div ref={filmStripRef} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[78vw] max-w-4xl h-[44vh] opacity-0">
-          <div className="absolute inset-0 bg-neutral-900/80 rounded-xl shadow-2xl" />
-          <div className="absolute inset-x-6 top-3 flex gap-2">
-            {Array.from({ length: 16 }).map((_, i) => (
-              <div key={i} className="w-3 h-3 rounded-full bg-neutral-700" />
-            ))}
-          </div>
-          <div className="absolute inset-x-6 bottom-3 flex gap-2">
-            {Array.from({ length: 16 }).map((_, i) => (
-              <div key={i} className="w-3 h-3 rounded-full bg-neutral-700" />
-            ))}
-          </div>
-          <div className="absolute inset-6 border-2 border-black/80 rounded-lg" />
-        </div>
-      </section>
-
-      <section ref={sec6Ref} className="h-screen w-full bg-white flex flex-col items-center justify-center px-6">
-        <div className="flex gap-3 mb-6">
-          <span className="text-[16px]" style={{ color: '#FF9F43' }}>🍁</span>
-          <span className="text-[16px]" style={{ color: '#E74C3C' }}>🍁</span>
-          <span className="text-[16px]" style={{ color: '#FDCB6E' }}>🍁</span>
-        </div>
-        <div className="text-red-600 text-2xl mb-2">致我的秋天</div>
-        <div className="text-neutral-800 text-base max-w-2xl text-center">
-          这个秋天，因为有你而完整。下一个秋天，也想和你一起看枫叶、闻桂香、吃烤红薯——不止秋天，每个季节都想有你。
-        </div>
-        <div className="mt-8 flex items-center gap-6">
-          <button
-            aria-label="点赞"
-            className={`w-12 h-12 rounded-full flex items-center justify-center border ${liked ? 'border-red-500 bg-red-500/10' : 'border-neutral-300 bg-white'}`}
-            onClick={(e) => {
-              setLiked(v => !v)
-              const rect = (e.currentTarget as HTMLButtonElement).getBoundingClientRect()
-              const parent = sec6Ref.current
-              if (parent) spawnParticles(parent, rect.left + rect.width / 2, rect.top, 'heart')
-            }}
-          >
-            <span className={`text-2xl ${liked ? 'text-red-600' : 'text-neutral-600'}`}>❤</span>
-          </button>
-          <button
-            aria-label="分享"
-            className="w-12 h-12 rounded-full flex items-center justify-center border border-neutral-300"
-            onClick={() => setShowShare(s => !s)}
-          >
-            <span className="text-xl text-neutral-700">⇪</span>
-          </button>
-        </div>
-        {showShare && (
-          <div role="dialog" aria-modal="true" className="mt-6 rounded-xl border border-neutral-200 p-4 shadow-md bg-white">
-            <div className="text-sm text-neutral-700 mb-2">分享给：</div>
-            <div className="flex gap-4">
-              <button className="px-3 py-1 rounded-md bg-[#1AAD19] text-white">微信</button>
-              <button className="px-3 py-1 rounded-md bg-[#09BB07] text-white">朋友圈</button>
-            </div>
-            <div className="mt-2 text-xs text-neutral-500">把这份秋天的浪漫保存下来</div>
-          </div>
+          ),
+          document.body
         )}
       </section>
-    </div>
-  )
+      <section className="relative h-[100vh] w-full bg-white overflow-hidden">
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+          <div ref={heartRef} className="absolute top-2 left-1/2 -translate-x-1/2 text-red-400 opacity-60">❤</div>
+          <div ref={fifthTextRef} className="text-center max-w-xl">
+            <span className="block text-red-600 font-serif text-2xl md:text-3xl mb-4">致我的秋天</span>
+            <span className="block text-stone-900 font-serif text-lg md:text-xl">这个秋天，因为有你而完整。</span>
+            <span className="block text-stone-900 font-serif text-lg md:text-xl">下一个秋天，也想和你一起看枫叶、闻桂香、吃烤红薯</span>
+            <span className="block text-stone-900 font-serif text-lg md:text-xl">——不止秋天，每个季节都想有你。</span>
+          </div>
+          <div ref={fifthIconsRef} className="mt-6 flex gap-4 items-center">
+            <span className="text-red-500">🍁</span>
+            <span className="text-red-500">🍁</span>
+            <span className="text-red-500">🍁</span>
+          </div>
+        </div>
+      </section>
+      </div>
+    </main>
+  );
 }
