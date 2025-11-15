@@ -296,7 +296,7 @@ export default function AutumnMyPage() {
   return (
     <main ref={containerRef} className="h-[100vh] w-full overflow-hidden">
       <div ref={wrapperRef} className="relative w-full">
-      <section className="relative h-[100vh] w-full">
+      <section className="relative h-[100vh] w-full" style={{ height: '100svh' }}>
         <Image
           src="https://objectstorageapi.sg-members-1.clawcloudrun.com/cfd6671w-storage/autumn-my/1.PNG"
           alt="Autumn Background"
@@ -333,8 +333,8 @@ export default function AutumnMyPage() {
           )}
         </div>
       </section>
-      <section className="relative h-[100vh] w-full flex flex-col md:flex-row bg-gradient-to-b from-amber-50 via-rose-50 to-amber-100 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900">
-        <div ref={secondImageWrapRef} className="relative w-full md:w-1/2 h-[60vh] md:h-full">
+      <section className="relative h-[100vh] w-full flex flex-col md:flex-row bg-gradient-to-b from-amber-50 via-rose-50 to-amber-100 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900" style={{ height: '100svh' }}>
+        <div ref={secondImageWrapRef} className="relative w-full md:w-1/2 h-[55vh] md:h-full">
           <Image
             src="https://objectstorageapi.sg-members-1.clawcloudrun.com/cfd6671w-storage/autumn-my/2.PNG"
             alt="Autumn Side"
@@ -363,7 +363,7 @@ export default function AutumnMyPage() {
           </div>
         </div>
       </section>
-      <section className="relative min-h-[100vh] md:h-[100vh] w-full overflow-hidden">
+      <section className="relative h-[100vh] w-full overflow-hidden bg-white" style={{ height: '100svh' }}>
         <div className="absolute inset-0">
           <div ref={leavesRef} className="pointer-events-none absolute inset-0">
             {mounted && Array.from({ length: leafCount }).map((_, i) => (
@@ -382,7 +382,7 @@ export default function AutumnMyPage() {
           </div>
         </div>
       </section>
-      <section className="relative h-[100vh] w-full bg-black overflow-hidden">
+      <section className="relative h-[100vh] w-full bg-black overflow-hidden" style={{ height: '100svh' }}>
         <div ref={polaroidsRef} className="absolute inset-0">
           {/* Desktop: absolute canvas; Mobile: grid fallback */}
           <div className="hidden md:block w-full h-full relative">
@@ -419,7 +419,7 @@ export default function AutumnMyPage() {
               );
             })}
           </div>
-          <div className="md:hidden w-full min-h-[100vh] relative">
+          <div className="md:hidden w-full h-[100vh] relative" style={{ height: '100svh' }}>
             {urls && mobileStyles.map((s, i) => {
               const src = urls[i];
               return (
@@ -479,7 +479,7 @@ export default function AutumnMyPage() {
           document.body
         )}
       </section>
-      <section className="relative min-h-[100vh] md:h-[100vh] w-full bg-white overflow-hidden">
+      <section className="relative h-[100vh] w-full bg-white overflow-hidden" style={{ height: '100svh' }}>
         <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
           <div ref={heartRef} className="absolute top-2 left-1/2 -translate-x-1/2 text-red-400 opacity-60">❤</div>
           <div ref={fifthTextRef} className="text-center max-w-xl px-4">
