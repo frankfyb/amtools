@@ -29,6 +29,7 @@ export default function AutumnMyPage() {
   const heartRef = useRef<HTMLDivElement>(null);
   const [viewer, setViewer] = useState<{ url: string } | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [leafCount, setLeafCount] = useState(18);
   const polaroidsRef = useRef<HTMLDivElement>(null);
   const polaroidTlRef = useRef<gsap.core.Tween | gsap.core.Timeline | null>(null);
   type CardStyle = { left: number; top: number; rotate: number; z: number };
@@ -78,6 +79,9 @@ export default function AutumnMyPage() {
 
   useEffect(() => {
     setMounted(true);
+    if (typeof window !== "undefined") {
+      setLeafCount(window.innerWidth < 768 ? 10 : 18);
+    }
   }, []);
 
   useEffect(() => {
@@ -320,7 +324,7 @@ export default function AutumnMyPage() {
               });
             }
           }}
-          className="absolute inset-0 flex justify-center items-start pt-24 md:items-center md:pt-0"
+          className="absolute inset-0 flex justify-center items-start pt-16 md:items-center md:pt-0"
         >
           {showTitle && (
             <h1 ref={titleRef} className="text-4xl md:text-6xl font-serif text-white tracking-wide">
@@ -330,7 +334,7 @@ export default function AutumnMyPage() {
         </div>
       </section>
       <section className="relative h-[100vh] w-full flex flex-col md:flex-row bg-gradient-to-b from-amber-50 via-rose-50 to-amber-100 dark:from-stone-900 dark:via-stone-800 dark:to-stone-900">
-        <div ref={secondImageWrapRef} className="relative w-full md:w-1/2 h-1/2 md:h-full">
+        <div ref={secondImageWrapRef} className="relative w-full md:w-1/2 h-[60vh] md:h-full">
           <Image
             src="https://objectstorageapi.sg-members-1.clawcloudrun.com/cfd6671w-storage/autumn-my/2.PNG"
             alt="Autumn Side"
@@ -343,8 +347,8 @@ export default function AutumnMyPage() {
           <div ref={overlayVignetteRef} className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-60" style={{ backgroundImage: "radial-gradient(120% 80% at 50% 50%, rgba(255,220,160,0.10) 0%, rgba(255,220,160,0.08) 40%, rgba(0,0,0,0.25) 100%)" }} />
           <div className="pointer-events-none absolute inset-0 bg-black/15 mix-blend-multiply" />
         </div>
-        <div className="flex w-full md:w-1/2 items-center justify-center p-6">
-          <div ref={textWrapRef} className=" text-stone-700 font-serif text-xl md:text-2xl bg-white/10 backdrop-blur-md ring-1 ring-white/20 rounded-xl shadow-xl p-4 md:p-6 text-center md:text-left leading-relaxed md:leading-loose space-y-2 md:space-y-3 tracking-wide">
+        <div className="flex w-full md:w-1/2 items-center justify-center p-4 md:p-6">
+          <div ref={textWrapRef} className=" text-stone-700 font-serif text-base md:text-2xl bg-white/10 backdrop-blur-md ring-1 ring-white/20 rounded-xl shadow-xl p-3 md:p-6 text-center md:text-left leading-relaxed md:leading-loose space-y-2 md:space-y-3 tracking-wide">
             {typedText
               .split(/(?<=[，。；！？》])/)
               .filter(Boolean)
@@ -359,16 +363,16 @@ export default function AutumnMyPage() {
           </div>
         </div>
       </section>
-      <section className="relative h-[100vh] w-full overflow-hidden">
+      <section className="relative min-h-[100vh] md:h-[100vh] w-full overflow-hidden">
         <div className="absolute inset-0">
           <div ref={leavesRef} className="pointer-events-none absolute inset-0">
-            {Array.from({ length: 18 }).map((_, i) => (
+            {mounted && Array.from({ length: leafCount }).map((_, i) => (
               <span key={i} className="absolute text-amber-400">🍂</span>
             ))}
           </div>
         </div>
-        <div ref={thirdTextRef} className="absolute inset-0 flex items-center justify-center p-6">
-          <div className="max-w-xl text-stone-800 font-serif text-xl md:text-2xl leading-relaxed md:leading-loose text-center md:text-left">
+        <div ref={thirdTextRef} className="absolute inset-0 flex items-center justify-center p-5 md:p-6">
+          <div className="max-w-xl text-stone-800 font-serif text-lg md:text-2xl leading-relaxed md:leading-loose text-center md:text-left space-y-2 md:space-y-3">
             {thirdText
               .split(/(?<=[，。；！？])/)
               .filter(Boolean)
@@ -415,7 +419,7 @@ export default function AutumnMyPage() {
               );
             })}
           </div>
-          <div className="md:hidden w-full h-full relative">
+          <div className="md:hidden w-full min-h-[100vh] relative">
             {urls && mobileStyles.map((s, i) => {
               const src = urls[i];
               return (
@@ -426,8 +430,8 @@ export default function AutumnMyPage() {
                   className="absolute transition-transform duration-300 active:scale-[0.99]"
                   style={{ left: `${s.left}%`, top: `${s.top}%`, zIndex: 10 + s.z, transform: `rotate(${s.rotate}deg)` }}
                 >
-                  <div className="relative bg-white rounded-[3px] shadow-[0_8px_22px_rgba(0,0,0,0.35)] ring-1 ring-stone-200/70 p-2 pb-6">
-                    <div className="relative aspect-[3/4]" style={{ width: `${(i % 3 === 1 ? 40 : 36)}vw` }}>
+                  <div className="relative bg-white rounded-[3px] shadow-[0_8px_22px_rgba(0,0,0,0.35)] ring-1 ring-stone-200/70 p-2 pb-5">
+                    <div className="relative aspect-[3/4]" style={{ width: `${(i % 3 === 1 ? 38 : 34)}vw` }}>
                       <Image
                         src={src}
                         alt={`polaroid-${i + 1}`}
@@ -475,16 +479,16 @@ export default function AutumnMyPage() {
           document.body
         )}
       </section>
-      <section className="relative h-[100vh] w-full bg-white overflow-hidden">
+      <section className="relative min-h-[100vh] md:h-[100vh] w-full bg-white overflow-hidden">
         <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
           <div ref={heartRef} className="absolute top-2 left-1/2 -translate-x-1/2 text-red-400 opacity-60">❤</div>
-          <div ref={fifthTextRef} className="text-center max-w-xl">
-            <span className="block text-red-600 font-serif text-2xl md:text-3xl mb-4">致我的秋天</span>
-            <span className="block text-stone-900 font-serif text-lg md:text-xl">这个秋天，因为有你而完整。</span>
-            <span className="block text-stone-900 font-serif text-lg md:text-xl">下一个秋天，也想和你一起看枫叶、闻桂香、吃烤红薯</span>
-            <span className="block text-stone-900 font-serif text-lg md:text-xl">——不止秋天，每个季节都想有你。</span>
+          <div ref={fifthTextRef} className="text-center max-w-xl px-4">
+            <span className="block text-red-600 font-serif text-xl md:text-3xl mb-3 md:mb-4">致我的秋天</span>
+            <span className="block text-stone-900 font-serif text-base md:text-xl">这个秋天，因为有你而完整。</span>
+            <span className="block text-stone-900 font-serif text-base md:text-xl">下一个秋天，也想和你一起看枫叶、闻桂香、吃烤红薯</span>
+            <span className="block text-stone-900 font-serif text-base md:text-xl">——不止秋天，每个季节都想有你。</span>
           </div>
-          <div ref={fifthIconsRef} className="mt-6 flex gap-4 items-center">
+          <div ref={fifthIconsRef} className="mt-4 md:mt-6 flex gap-3 md:gap-4 items-center">
             <span className="text-red-500">🍁</span>
             <span className="text-red-500">🍁</span>
             <span className="text-red-500">🍁</span>
