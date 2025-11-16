@@ -18,18 +18,29 @@ export function useSectionScroll({
   wrapperRef
 }: UseSectionScrollOptions) {
   const touchStartY = useRef(0);
+  const viewportHeightRef = useRef<number>(0);
 
   useEffect(() => {
     const wrapper = wrapperRef.current;
     const container = containerRef.current;
     if (!wrapper || !container) return;
 
+    const computeViewportHeight = () => {
+      const vv = typeof window !== "undefined" && typeof (window as unknown as { visualViewport?: { height: number } }).visualViewport !== "undefined"
+        ? (window as unknown as { visualViewport: { height: number } }).visualViewport.height
+        : window.innerHeight;
+      viewportHeightRef.current = vv;
+    };
+
+    computeViewportHeight();
+    gsap.set(wrapper, { y: -viewportHeightRef.current * activeIndex });
+
     const goTo = (index: number) => {
       if (animatingRef.current) return;
       
       animatingRef.current = true;
       gsap.to(wrapper, {
-        y: -window.innerHeight * index,
+        y: -viewportHeightRef.current * index,
         duration: 0.8,
         ease: "power2.out",
         onComplete: () => {
@@ -67,14 +78,29 @@ export function useSectionScroll({
       }
     };
 
+    const onTouchMove = (e: TouchEvent) => {
+      if (animatingRef.current) e.preventDefault();
+    };
+
+    const onResize = () => {
+      computeViewportHeight();
+      gsap.set(wrapper, { y: -viewportHeightRef.current * activeIndex });
+    };
+
     container.addEventListener("wheel", onWheel, { passive: false });
     container.addEventListener("touchstart", onTouchStart, { passive: true });
     container.addEventListener("touchend", onTouchEnd, { passive: true });
+    container.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
 
     return () => {
       container.removeEventListener("wheel", onWheel);
       container.removeEventListener("touchstart", onTouchStart);
       container.removeEventListener("touchend", onTouchEnd);
+      container.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
     };
   }, [activeIndex, onIndexChange, animatingRef, containerRef, wrapperRef]);
 }

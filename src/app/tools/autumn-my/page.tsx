@@ -45,7 +45,11 @@ export default function AutumnMyPage() {
   }, [viewer]);
 
   return (
-    <main ref={containerRef} className="h-[100vh] w-full overflow-hidden">
+    <main
+      ref={containerRef}
+      className="h-[100vh] w-full overflow-hidden"
+      style={{ height: "100svh", overscrollBehavior: "none", touchAction: "none" }}
+    >
       <div ref={wrapperRef} className="relative w-full">
       <HeroSection />
       <PoemSection />
