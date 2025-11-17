@@ -55,7 +55,7 @@ export const toolsData: Tool[] = [
       visits: '0',
       hot: false,
       new: true,
-      tags: ['TTS', '语音合成', '音频下载', '英文朗读']
+      tags: ['语音合成', '音频下载', '英文朗读']
     },
    {
       id: '4',
@@ -67,6 +67,30 @@ export const toolsData: Tool[] = [
       visits: '1',
       hot: false,
       new: true,
-      tags: ['TTS', '语音合成', '音频下载', '英文朗读']
+      tags: [ '语音合成', '音频下载']
+    },
+       {
+      id: '5',
+      name: '经典名句子',
+      description: '提供经典的名句子，适合学习和创作。',
+      url: '/tools/classic-quotes',
+      icon: '🔊',
+      category: '生活小工具',
+      visits: '1',
+      hot: false,
+      new: true,
+      tags: [ '语音合成', '音频下载']
+    },
+       {
+      id: '6',
+      name: 'autumn-my',
+      description: '秋天的记忆',
+      url: '/tools/autumn-my',
+      icon: '🔊',
+      category: '生活小工具',
+      visits: '1',
+      hot: false,
+      new: true,
+      tags: [ '语音合成', '音频下载']
     }
 ];

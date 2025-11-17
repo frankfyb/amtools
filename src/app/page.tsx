@@ -1,12 +1,11 @@
 'use client';
 
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { toolsData } from '@/data/tools';
-import type { Tool } from '@/types';
-import { filterToolsByCategory, getCategoriesWithCount } from '@/utils/filter';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import Header from '@/components/Header';
 import ToolCard from '@/components/ToolCard';
+import { toolsData } from '@/data/tools';
+import { filterToolsByCategory, getCategoriesWithCount } from '@/utils/filter';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 // 使用外部类型定义 Tool（见 '@/types'）
 
@@ -163,7 +162,7 @@ export default function Home() {
             {/* 工具网格 */}
             {isLoading ? (
               // 加载状态
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 auto-rows-fr gap-6">
                 {[...Array(8)].map((_, index) => (
                   <div 
                     key={index} 
@@ -200,7 +199,7 @@ export default function Home() {
                 ))}
               </div>
             ) : filteredTools.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 auto-rows-fr gap-6">
                 {filteredTools.map((tool) => (
                   <ToolCard key={tool.id} tool={tool} />
                 ))}

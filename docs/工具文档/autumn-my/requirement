@@ -1,0 +1,84 @@
+## 概述
+- 目标：开发一个全屏滚动的移动端叙事型交互界面，主题为“秋天的浪漫”。
+- 框架：Next.js（App Router），所有功能集中在单一 `page.tsx` 文件。
+- 设备适配：宽度 375px–768px 的主流移动端。
+- 动画：统一使用 `gsap` 实现（说明：需求中的“gasp”为笔误）。
+
+## 整体设计与交互
+- 全屏滚动：共 5 屏，每屏高度 `100vh`，纵向排列。
+- 平滑过渡：使用 `gsap` 控制切屏过渡与入场动画。
+- 交互支持：触摸滑动与鼠标滚轮均可切换屏幕。
+- 响应式布局：使用 Tailwind 断点系统适配 375–768px。
+
+## 文件与资源约定
+- 实现文件：`src/app/page.tsx`（单文件集中实现页面结构、动画、自定义 hooks 与类型）。
+- 图片资源：建议放置于根目录 `public/photos`，引用路径示例：`/photos/DSC01554.JPG` 与 `/photos/DSC01528.JPG`（注意扩展名大小写）。
+- 组件与样式：使用 TypeScript、Tailwind 原子类 + CSS Modules。
+- 图片加载：统一使用 `next/image`，关键图启用 `priority`，非关键图启用懒加载。
+
+## 第一屏（封面）
+- 文案：居中显示“2025 秋”，使用优雅的衬线字体（如 `font-serif`）。
+- 背景：`DSC01554.JPG`，添加轻微模糊效果 `blur(2px)`（CSS filter）。
+- 动画：页面加载时文字淡入（fadeIn），时长 `0.8s`，缓动 `power1.out`。
+
+## 第二屏（图文＋诗歌打字机）
+- 布局：移动端上方图片 `https://objectstorageapi.sg-members-1.clawcloudrun.com/cfd6671w-storage/autumn-my/2.PNG`，下方是《秋光里的她》我以镜头作笺纸，金风研墨记流年。她携萌兔抬眸瞬，我把深情锁镜间。一地银杏铺诗卷，满林晴色酿清欢。年年此景相携处，爱意如秋岁岁绵。。
+- 诗歌动画：
+  - 逐字显示，字符间隔 `0.1s`。
+  - 完成后光标闪烁 `3` 次（闪烁周期建议 `0.4s`）。
+- 图片动画：加载时轻微缩放 `scale 0.95→1`，时长 `0.6s`，缓动 `power1.out`。
+
+## 第三屏（滚动触发逐字淡入）
+- 初始样式：文字透明（`opacity: 0`）且上移 `10px`。
+- 触发逻辑：滚动进入视窗后逐字淡入，间隔 `0.05s/字`。
+- 动画参数：`ease-out`，单字时长 `0.3s`。
+- 背景特效：3–5 片银杏叶随机飘落，使用 `gsap` 控制 `y/x/rotation/duration` 随机，循环播放。
+
+## 第四屏（胶片效果图片墙）
+- 布局：3×3 网格全屏显示（网格等间距，保持居中对齐）。
+- 滤镜：褐色复古（建议 `sepia(0.6) contrast(1.05)`）。
+- 悬停/轻触：图片轻微放大 `scale(1.05)` 并提高亮度（移动端采用轻触触发）。
+- 噪点：整体叠加颗粒噪点效果 `noise 2%`（伪元素覆盖或滤镜实现）。
+https://objectstorageapi.sg-members-1.clawcloudrun.com/cfd6671w-storage/autumn-my/1.PNG
+
+## 第五屏（结尾与返回）
+- 内容：简洁的结尾文字。
+- 动画：文字自底部向上滑入，时长 `0.6s`，缓动 `power2.out`。
+- 交互：提供“查看更多”按钮，点击返回第一屏。
+
+## 动画参数（GSAP）
+- 第一屏文字：`duration: 0.8, opacity: 0→1, y: 10→0, ease: 'power1.out'`。
+- 第二屏图片：`fromTo(scale: 0.95→1, duration: 0.6, ease: 'power1.out')`。
+- 第二屏诗歌：字符拆分后 `stagger: 0.1`，结束光标闪烁 `repeat: 3, yoyo: true`。
+- 第三屏文字：`opacity: 0→1, y: -10→0, stagger: 0.05, duration: 0.3, ease: 'ease-out'`。
+- 落叶动画：每片叶子 `y: -10%→110%`；`x` 在屏宽内随机；`rotation` 随机；`duration: 3–6s`；`repeat: -1`；初始 `delay` 随机。
+- 第五屏文字：`from(y: 40, opacity: 0) → to(y: 0, opacity: 1, duration: 0.6, ease: 'power2.out')`。
+
+## 自定义 Hooks 与类型
+- `useSectionScroll`：统一处理触摸与滚轮切屏逻辑、节流与动画锁；暴露 `activeIndex`、`goTo(index)`、`next()`、`prev()`。
+- `useGsapScene`：注册与清理各屏入场/滚动触发动画，避免内存泄漏。
+- 类型示例：
+  - `type SectionID = 0 | 1 | 2 | 3 | 4`
+  - `interface ScrollState { activeIndex: SectionID; isAnimating: boolean }`
+
+## 响应式适配方案
+- 断点设置：使用 Tailwind 默认断点（如 `sm/md`）控制字体、行高、间距。
+- 第二屏在窄屏时改为纵向堆叠，保证图片优先展示与诗歌可读性。
+- 字体建议：第一屏采用衬线字体以体现优雅风格，其他屏使用易读无衬线。
+
+## 性能优化方案
+- `next/image` 启用懒加载，首屏关键图设置 `priority`。
+- 动画只在相关屏进入时启动，离开时暂停或销毁以节省资源。
+- 事件节流：滚轮与触摸滑动设置阈值与节流（建议 600ms）。
+- 噪点层透明度与混合模式优化，减少重绘开销。
+
+## 开发与规范
+- 所有新组件使用 TypeScript 编写；启用 TypeScript 严格模式。
+- 样式采用 Tailwind 原子类 + CSS Modules，命名统一。
+- 严格遵循 React Hooks 最佳实践；通过 ESLint 校验后再提交。
+
+## 交付物
+- 完整可运行的 `page.tsx` 组件（集中实现 5 屏与交互）。
+- 响应式设计适配方案（文档与实现细节体现）。
+- 性能优化方案（图片懒加载、动画注册/清理、事件节流）。
+- 详细的动画参数文档（见“动画参数”章节）。

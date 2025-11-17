@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飞书API经典语录显示工具</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', '思源黑体', sans-serif;
+        }
+        body {
+            background-color: #ffffff;
+            color: #2d3748;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 60px; /* 底部信息栏高度 */
+        }
+
+        /* 顶部导航栏 */
+        .header {
+            height: 60px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            border-bottom: 1px solid #f3f4f6;
+            background-color: #ffffff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .header-entry {
+            font-size: 16px;
+            color: #2d3748;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-entry:hover {
+            color: #2563eb;
+        }
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* 左侧分类栏 */
+        .category-sidebar {
+            width: 200px;
+            height: calc(100vh - 120px);
+            position: fixed;
+            top: 60px;
+            left: 0;
+            padding: 20px;
+            background-color: #ffffff;
+            border-right: 1px solid #f3f4f6;
+            z-index: 90;
+        }
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        .category-list {
+            list-style: none;
+        }
+        .category-item {
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+            color: #666666;
+            padding-left: 10px;
+            margin-bottom: 15px;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .category-item.active {
+            color: #2563eb;
+            border-left-color: #2563eb;
+            background-color: #f9fafb;
+            font-weight: 600;
+        }
+        .category-item:hover {
+            color: #2563eb;
+            background-color: #f9fafb;
+        }
+
+        /* 中间内容区 */
+        .content {
+            width: 600px;
+            margin: 80px auto 0; /* 距顶部导航80px */
+            position: relative;
+            z-index: 10;
+        }
+        .quote-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            padding: 50px;
+            transition: all 0.3s ease;
+        }
+        .quote-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .quote-text {
+            font-size: 24px;
+            line-height: 1.8;
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .quote-text .highlight {
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .quote-author {
+            font-size: 18px;
+            font-weight: 300;
+            color: #718096;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .btn {
+            width: 140px;
+            height: 40px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover {
+            transform: scale(0.98);
+        }
+        .btn-primary {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: #4b5563;
+        }
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+        .btn-collect {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: transparent;
+            color: #94a3b8;
+            padding: 0;
+        }
+        .btn-collect:hover {
+            color: #f59e0b;
+            transform: scale(1.1);
+        }
+        .btn-collect.active {
+            color: #f59e0b;
+        }
+
+        /* 提示气泡 */
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 80px; /* 距底部信息栏20px */
+            background-color: #10b981;
+            color: #ffffff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* 底部信息栏 */
+        .footer {
+            height: 60px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            border-top: 1px solid #f3f4f6;
+            background-color: #ffffff;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+        }
+        .footer-info {
+            font-size: 14px;
+            color: #718096;
+        }
+        .footer-status {
+            color: #10b981;
+        }
+
+        /* 响应式适配（移动端简化） */
+        @media (max-width: 768px) {
+            .header {
+                height: 50px;
+                padding: 0 20px;
+            }
+            .header-title {
+                font-size: 18px;
+            }
+            .category-sidebar {
+                display: none; /* 隐藏独立分类栏 */
+            }
+            .content {
+                width: calc(100% - 40px);
+                margin-top: 60px;
+            }
+            .quote-card {
+                padding: 30px;
+            }
+            .quote-text {
+                font-size: 20px;
+            }
+            .quote-author {
+                font-size: 16px;
+            }
+            .button-group {
+                gap: 10px;
+            }
+            .btn {
+                flex: 1;
+                width: auto;
+            }
+            .footer {
+                height: 50px;
+                padding: 0 20px;
+                flex-direction: column;
+                justify-content: center;
+                gap: 5px;
+            }
+            .footer-info {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="header">
+        <div class="header-title">飞书语录精选</div>
+        <div class="header-entry" id="collectEntry">
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            我的收藏
+        </div>
+    </header>
+
+    
+    <aside class="category-sidebar">
+        <div class="category-title">分类标签</div>
+        <ul class="category-list">
+            <li class="category-item active" data-category="inspirational">励志类</li>
+            <li class="category-item" data-category="philosophy">哲理类</li>
+            <li class="category-item" data-category="workplace">职场类</li>
+            <li class="category-item" data-category="emotion">情感类</li>
+            <li class="category-item" data-category="history">历史类</li>
+        </ul>
+    </aside>
+
+    
+    <main class="content">
+        <div class="quote-card" id="quoteCard">
+            <div class="quote-text">
+                “天生我材必有用，<span class="highlight">千金散尽还复来。</span>”
+            </div>
+            <div class="quote-author">—— 李白《将进酒》</div>
+            <div class="button-group">
+                <button class="btn btn-primary" id="changeQuote">
+                    <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
+                        <path d="M12 8v4l3 3H9l3-3V8zm0-5C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"/>
+                    </svg>
+                    换一条
+                </button>
+                <button class="btn btn-secondary" id="refreshQuote">
+                    <svg class="icon" viewBox="0 0 24 24" width="18" height="18">
+                        <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.07 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                    </svg>
+                    刷新最新
+                </button>
+                <button class="btn btn-collect" id="collectBtn">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    
+    <div class="toast" id="toast">
+        <svg class="icon" viewBox="0 0 24 24" width="20" height="20">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+        已收藏至“我的收藏”
+    </div>
+
+    
+    <footer class="footer">
+        <div class="footer-info footer-status">API连接正常</div>
+        <div class="footer-info">最后更新：2025-11-10 14:30</div>
+        <div class="footer-info">© 2025 飞书工具集</div>
+    </footer>
+
+    
+    <script>
+        // 元素获取
+        const collectBtn = document.getElementById('collectBtn');
+        const changeQuoteBtn = document.getElementById('changeQuote');
+        const refreshQuoteBtn = document.getElementById('refreshQuote');
+        const toast = document.getElementById('toast');
+        const quoteCard = document.getElementById('quoteCard');
+        const categoryItems = document.querySelectorAll('.category-item');
+
+        // 收藏按钮交互
+        collectBtn.addEventListener('click', () => {
+            collectBtn.classList.toggle('active');
+            // 显示提示气泡
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        });
+
+        // 分类切换交互
+        categoryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                categoryItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                // 此处可添加gasp语录切换动画
+                quoteCard.style.opacity = '0.5';
+                setTimeout(() => {
+                    quoteCard.style.opacity = '1';
+                }, 400);
+            });
+        });
+
+        // 换一条按钮交互（实际需结合gasp实现退场入场动画）
+        changeQuoteBtn.addEventListener('click', () => {
+            quoteCard.style.transform = 'translateX(-30px) rotate(-5deg)';
+            quoteCard.style.opacity = '0';
+            setTimeout(() => {
+                // 模拟新语录加载
+                const quotes = [
+                    { text: "“人生如逆旅，我亦是行人。”", highlight: "我亦是行人。", author: "—— 苏轼《临江仙》" },
+                    { text: "“长风破浪会有时，直挂云帆济沧海。”", highlight: "长风破浪会有时，", author: "—— 李白《行路难》" },
+                    { text: "“苔花如米小，也学牡丹开。”", highlight: "也学牡丹开。", author: "—— 袁枚《苔》" }
+                ];
+                const randomIdx = Math.floor(Math.random() * quotes.length);
+                const quote = quotes[randomIdx];
+                document.querySelector('.quote-text').innerHTML = `“${quote.text.substring(1, quote.text.length-1).replace(quote.highlight, ''+quote.highlight+'')}”`;
+                document.querySelector('.quote-author').textContent = quote.author;
+                
+                quoteCard.style.transform = 'translateX(30px) rotate(5deg)';
+                quoteCard.style.opacity = '1';
+                setTimeout(() => {
+                    quoteCard.style.transform = 'translateX(0) rotate(0)';
+                }, 400);
+            }, 400);
+        });
+
+        // 刷新最新按钮交互
+        refreshQuoteBtn.addEventListener('click', () => {
+            refreshQuoteBtn.innerHTML = `
+                
+                刷新中...
+            `;
+            quoteCard.style.opacity = '0.5';
+            
+            // 模拟API请求
+            setTimeout(() => {
+                refreshQuoteBtn.innerHTML = `
+                    
+                    刷新最新
+                `;
+                quoteCard.style.opacity = '1';
+                quoteCard.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    quoteCard.style.transform = 'scale(1)';
+                }, 200);
+                
+                // 显示更新提示
+                toast.innerHTML = `
+                    
+                    已更新至最新语录
+                `;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
-'use client';
+'use client'; // 标记为客户端组件（Next.js 13+ 必需）
+
 
 // TodoPage 页面：整合表单、列表与本地持久化逻辑
 // 作用：
