@@ -1,6 +1,6 @@
 {
   "source": "feishu-bitable",
-  "updatedAt": "2025-11-13T06:03:45.459Z",
+  "updatedAt": "2025-11-17T07:38:17.478Z",
   "schema": [
     {
       "type": 1
@@ -424,8 +424,24 @@
             "type": "text"
           }
         ],
-        "sentence": "我是一个测试数据",
-        "time": 1762859231349
+        "sentence": "无法控制别人但是可以控制自己，本职工作做好，剩余精力在做别的事.\nWe cannot control others, but we can control ourselves. Do our job well, and then use our remaining energy to do other things.",
+        "source": "amtools",
+        "time": 1763032020000
+      }
+    },
+    {
+      "record_id": "recv2qrdLgvzQj",
+      "fields": {
+        "books": [
+          {
+            "table_id": "tblkMJ7WEo846ZBo",
+            "text_arr": [],
+            "type": "text"
+          }
+        ],
+        "sentence": "纠结的时间用来提升自己核心竞争力.\nThe time spent being torn should be used to enhance one's core competitiveness.\n\n",
+        "source": "amtools",
+        "time": 1763030241262
       }
     }
   ],
@@ -434,169 +450,152 @@
       "id": 1,
       "text": "渐进式的学习方法，不仅可以帮助你持续扩展知识边界，还能确保知识的及时更新。",
       "author": "",
-      "category": "",
-      "_rid": "recfBRfFgd"
+      "category": ""
     },
     {
       "id": 2,
       "text": "信息到智慧的进化是一个动态的、渐进的过程，涉及信息的收集、知识的构建和智慧的形成",
       "author": "",
-      "category": "",
-      "_rid": "recu2WCH1O"
+      "category": ""
     },
     {
       "id": 3,
       "text": " 知识是人类特有的资源，书上没有知识，书上只有信息，知识是在特殊的工作和行动中运用信息的能力。",
       "author": "",
-      "category": "",
-      "_rid": "recGQGFEsv"
+      "category": ""
     },
     {
       "id": 4,
       "text": "头脑的价值在于思考和创造，而非记忆。",
       "author": "",
-      "category": "",
-      "_rid": "recR0UG7V3"
+      "category": ""
     },
     {
       "id": 5,
       "text": "劳动也是运动",
       "author": "",
-      "category": "",
-      "_rid": "recnjOFBxs"
+      "category": ""
     },
     {
       "id": 6,
       "text": "学习成本最低",
       "author": "",
-      "category": "",
-      "_rid": "recWEIxPk8"
+      "category": ""
     },
     {
       "id": 7,
       "text": "我们卖的不仅仅是产品，还有人格；用户购买的也不仅仅是产品，更是一种价值观认同。",
       "author": "",
-      "category": "",
-      "_rid": "recVCXvOkN"
+      "category": ""
     },
     {
       "id": 8,
       "text": "逻辑思维搭建知识的 “骨架”，理解其内在逻辑",
       "author": "",
-      "category": "",
-      "_rid": "rec45AzYYd"
+      "category": ""
     },
     {
       "id": 9,
       "text": "结构化思维梳理知识的 “层次”，形成体系；",
       "author": "",
-      "category": "",
-      "_rid": "rec9wkxttP"
+      "category": ""
     },
     {
       "id": 10,
       "text": "批判性思维深化理解，区分 “事实” 与 “观点”；",
       "author": "",
-      "category": "",
-      "_rid": "recFoSulnG"
+      "category": ""
     },
     {
       "id": 11,
       "text": "用成长性思维应对学习中的困难，保持动力；",
       "author": "",
-      "category": "",
-      "_rid": "recuWt6rlDszV5"
+      "category": ""
     },
     {
       "id": 12,
       "text": "全程用元认知思维反思学习过程，及时优化方法",
       "author": "",
-      "category": "",
-      "_rid": "recuWt6DXwhmcA"
+      "category": ""
     },
     {
       "id": 13,
       "text": "费曼技巧的核心是 “用简单语言解释复杂内容”，适合检验学习效果并强化记忆。",
       "author": "",
-      "category": "",
-      "_rid": "recuWt7BbiYmcE"
+      "category": ""
     },
     {
       "id": 14,
       "text": "无论你定位在什么领域，长期持续地输出相关内容都是最重要的。因为长期持续输出才有积累，有积累才有专业影响力，这个才是别人信任和认可你的基础。",
       "author": "",
-      "category": "",
-      "_rid": "recuWt8fclCBSg"
+      "category": ""
     },
     {
       "id": 15,
       "text": "读书不再是“随随便便”地读，而是带着明确的目的、充满主动性地去读",
       "author": "books",
-      "category": "Expressed ",
-      "_rid": "recuWWkRMEQi0w"
+      "category": "Expressed "
     },
     {
       "id": 16,
       "text": "不断优化自己阅读方式，才能带来质量提升。",
       "author": "books",
-      "category": "Expressed ",
-      "_rid": "recuX8CcNfRdZd"
+      "category": "Expressed "
     },
     {
       "id": 17,
       "text": "阅读不是孤立的事情，需要结合我们的目标才能有效演能力养成。",
       "author": "books",
-      "category": "Expressed ",
-      "_rid": "recuX8CeMaVZ6d"
+      "category": "Expressed "
     },
     {
       "id": 18,
       "text": "知道的越多，对自己的无知的认知越充分。越不会产生妄自菲薄的优越感。",
       "author": "books",
-      "category": "Expressed ",
-      "_rid": "recuX8Cg2VejsY"
+      "category": "Expressed "
     },
     {
       "id": 19,
       "text": "时间都站在她这边胜之不武。",
       "author": "books",
-      "category": "Expressed ",
-      "_rid": "recuX8CnaeGs7x"
+      "category": "Expressed "
     },
     {
       "id": 20,
       "text": "读书的意义大概就是用生活所感去读书，用读书所得去生活吧。",
       "author": "books",
-      "category": "Expressed ",
-      "_rid": "recuX8Cnf1rF8i"
+      "category": "Expressed "
     },
     {
       "id": 21,
       "text": "只见树木，不见森林。",
       "author": "books",
-      "category": "Expressed ",
-      "_rid": "recuX8Dignoycq"
+      "category": "Expressed "
     },
     {
       "id": 22,
       "text": "读书使人渊博，交谈使人机敏，写作使人严谨。",
       "author": "books",
-      "category": "Expressed ",
-      "_rid": "recuX8DkPSJrCb"
+      "category": "Expressed "
     },
     {
       "id": 23,
       "text": "对一个内容或者主题的内容特别乱的时候，怎么办，通过思维导图捋顺思维",
       "author": "person",
-      "category": "thought",
-      "_rid": "recuXcZBbCaLMr"
+      "category": "thought"
     },
     {
       "id": 24,
-      "text": "我是一个测试数据",
-      "author": "",
-      "category": "",
-      "_rid": "recv2eRGgRyYW3"
+      "text": "无法控制别人但是可以控制自己，本职工作做好，剩余精力在做别的事.\nWe cannot control others, but we can control ourselves. Do our job well, and then use our remaining energy to do other things.",
+      "author": "amtools",
+      "category": ""
+    },
+    {
+      "id": 25,
+      "text": "纠结的时间用来提升自己核心竞争力.\nThe time spent being torn should be used to enhance one's core competitiveness.\n\n",
+      "author": "amtools",
+      "category": ""
     }
-  ]
+  ],
+  "etag": "W/\"87b557e8-2178\""
 }

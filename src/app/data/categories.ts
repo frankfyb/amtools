@@ -13,5 +13,6 @@ export const categories: Category[] = [
   { id: '8', name: '测试工具' },
   { id: '9', name: '运维工具' },
   { id: '10', name: '实用小工具' },
-  { id: '11', name: '安全工具' },
+  { id: '11', name: '生活小工具' },
+  { id: '12', name: '安全工具' }
 ];
