@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { Suspense } from 'react';
 import { signIn } from 'next-auth/react';
 
 function mapOAuthError(code: string | null): string | null {
@@ -21,7 +22,7 @@ function mapOAuthError(code: string | null): string | null {
   }
 }
 
-export default function LoginPage() {
+function LoginInner() {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -126,4 +127,12 @@ export default function LoginPage() {
       </div>
     </div>
   );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="w-10 h-10 rounded-full bg-slate-200 animate-pulse" /></div>}>
+      <LoginInner />
+    </Suspense>
+  )
 }

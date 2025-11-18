@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useState, type ReactNode } from 'react';
+import { memo, useState, type ReactNode, Suspense } from 'react';
 import AuthStatus from './AuthStatus';
 
 export interface HeaderNavItem {
@@ -87,7 +87,9 @@ const Header = memo(function Header({
             )}
 
             {/* 认证状态组件 */}
-            <AuthStatus />
+            <Suspense fallback={<div className="w-8 h-8 rounded-full bg-slate-200 animate-pulse" />}> 
+              <AuthStatus />
+            </Suspense>
 
             {/* 移动端菜单按钮 */}
             {navItems.length > 0 && (

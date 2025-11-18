@@ -2,6 +2,7 @@
 
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
+import { Suspense } from 'react';
 import ToolCard from '@/components/ToolCard';
 import { toolsData } from '@/data/tools';
 import { filterToolsByCategory, getCategoriesWithCount } from '@/utils/filter';
@@ -38,21 +39,23 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 flex flex-col">
-      {/* Header */}
-      <Header
-        title="AI工具导航"
-        subtitle="发现优质AI工具"
-        navItems={[
-          { label: '热门工具', href: '#' },
-          { label: '最新工具', href: '#' },
-          { label: '分类浏览', href: '#' },
-        ]}
-        showSubmitButton
-        onSubmit={() => {
-          // TODO: 跳转提交工具页面或打开对话框
-        }}
-        sticky
-      />
+      {/* Header（包含 useSearchParams 的子树，需使用 Suspense 包裹以满足 SSR 预渲染要求） */}
+      <Suspense fallback={<div className="h-16 lg:h-20 border-b border-slate-200/60 bg-white/95" />}> 
+        <Header
+          title="AI工具导航"
+          subtitle="发现优质AI工具"
+          navItems={[
+            { label: '热门工具', href: '#' },
+            { label: '最新工具', href: '#' },
+            { label: '分类浏览', href: '#' },
+          ]}
+          showSubmitButton
+          onSubmit={() => {
+            // TODO: 跳转提交工具页面或打开对话框
+          }}
+          sticky
+        />
+      </Suspense>
       {/* 主要内容区域 */}
       <main className="flex-1">
         {/* 左侧导航栏 */}
