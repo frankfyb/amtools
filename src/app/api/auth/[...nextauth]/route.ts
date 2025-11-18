@@ -75,7 +75,7 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
     error: '/auth/error',
   },
-  debug: process.env.NODE_ENV === 'development',
+  debug: true, // 临时开启调试模式以诊断问题
   callbacks: {
     async jwt({ token, user }) {
       // 在首次登录时，将用户 id 放入 token.sub（NextAuth 默认行为）
