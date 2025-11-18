@@ -1,11 +1,11 @@
+import { prisma } from '@/lib/prisma';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import bcrypt from 'bcryptjs';
 import NextAuth, { type NextAuthOptions, type User as NextAuthUser } from 'next-auth';
+import type { AdapterUser } from 'next-auth/adapters';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { prisma } from '@/lib/prisma';
-import bcrypt from 'bcryptjs';
-import type { AdapterUser } from 'next-auth/adapters';
 
 function buildProviders(): NextAuthOptions['providers'] {
   const providers: NextAuthOptions['providers'] = [];
@@ -64,7 +64,7 @@ function buildProviders(): NextAuthOptions['providers'] {
   return providers;
 }
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt',
