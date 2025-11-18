@@ -93,7 +93,7 @@ export default function ClassicQuotes() {
             err={err}
             onRetry={onRetry}
             onFetch={fetchQuote}
-            onRefreshLatest={() => { fetchQuote() }}
+            onRefreshLatest={() => { void refresh().then(() => fetchQuote()) }}
             onToggleFav={toggleFav}
             isFav={!!(q && favIds.includes(q.id))}
             anim={anim}
