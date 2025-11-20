@@ -1,8 +1,8 @@
 // app/api/todos/route.ts
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
-import { authOptions } from '../../../api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 
 // 扩展 Session 类型以包含用户 ID
 interface CustomSession {
@@ -14,8 +14,7 @@ interface CustomSession {
   };
 }
 
-// 初始化 Prisma 客户端（连接数据库）
-const prisma = new PrismaClient();
+// 使用共享 Prisma 客户端
 
 // 1. GET：获取所有 Todo
 export async function GET() {
