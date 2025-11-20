@@ -64,7 +64,7 @@ function buildProviders(): NextAuthOptions['providers'] {
   return providers;
 }
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: 'jwt',

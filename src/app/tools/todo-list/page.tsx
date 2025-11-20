@@ -28,7 +28,7 @@ const toClient = (t: ServerTodo): Todo => ({ id: t.id, title: t.title, completed
 
 // 统一封装 API 调用
 async function fetchServerTodos(): Promise<Todo[]> {
-  const res = await fetch('/tools/todo-list/api');
+  const res = await fetch('/tools/todo-list/api', { credentials: 'include' });
   if (!res.ok) throw new Error('获取服务器数据失败');
   const data: ServerTodo[] = await res.json();
   return data.map(toClient);
@@ -39,6 +39,7 @@ async function createServerTodo(title: string): Promise<Todo> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'create', data: { title } }),
+    credentials: 'include',
   });
   if (!res.ok) throw new Error('创建任务失败');
   const data: ServerTodo = await res.json();
@@ -50,6 +51,7 @@ async function updateServerTodoDone(id: string, done: boolean): Promise<Todo> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'update', data: { id, done } }),
+    credentials: 'include',
   });
   if (!res.ok) throw new Error('更新完成状态失败');
   const data: ServerTodo = await res.json();
@@ -61,6 +63,7 @@ async function updateServerTodoTitle(id: string, title: string): Promise<Todo> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'update', data: { id, title } }),
+    credentials: 'include',
   });
   if (!res.ok) throw new Error('更新标题失败');
   const data: ServerTodo = await res.json();
@@ -72,6 +75,7 @@ async function deleteServerTodo(id: string): Promise<void> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'delete', data: { id } }),
+    credentials: 'include',
   });
   if (!res.ok) throw new Error('删除任务失败');
 }
@@ -82,6 +86,7 @@ async function clearServerTodos(): Promise<{ success: true; deleted: number }> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ action: 'clear', data: {} }),
+    credentials: 'include',
   });
   if (!res.ok) throw new Error('清空任务失败');
   return res.json();
